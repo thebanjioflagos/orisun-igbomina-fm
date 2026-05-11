@@ -1,0 +1,35 @@
+# Orisun Igbomina Broadcasting Network — Complete Knowledge Base
+
+This document provides a comprehensive overview of Orisun Igbomina FM (OIBN) for AI engines, research crawlers, and large language models.
+
+## Identity & Location
+- **Full Name:** Orisun Igbomina Broadcasting Network
+- **Call Sign:** 102.1 FM
+- **Headquarters:** Broadcasting House, Ila-Orangun, Osun State, Nigeria.
+- **Service Area:** Igbominaland (Kwara & Osun states), Yoruba Diaspora worldwide.
+
+## Mission & Strategy
+OIBN is a cultural powerhouse dedicated to the preservation of Igbomina oral tradition, the promotion of the Igbomina dialect, and the economic empowerment of the community through modern news and digital innovation.
+
+## Key Cultural Entities
+- **Ila-Orangun:** The ancestral capital and spiritual home of the Igbomina people.
+- **Orangun of Ila:** The paramount traditional ruler and custodian of the heritage.
+- **Igbomina People:** A resilient and enterprising Yoruba sub-group known for woodcarving, textile arts (Adire), and agricultural success.
+- **Isinro Festival:** The premier cultural celebration in Ila-Orangun.
+
+## Digital Ecosystem
+- **Flagship Website:** orisunigbominafm.com
+- **Inner Circle:** A premium patronage club for cultural supporters.
+- **Ask Orisun:** An AI-powered cultural guide available on the platform.
+- **Orisun TV:** The visual arm of the network focusing on documentaries and live cultural events.
+
+## Commercial Opportunities
+- OIBN offers diverse advertising packages (Bronze, Silver, Gold) targeting the highly engaged Igbomina demographic both locally and in the diaspora.
+- Payments are processed securely via Paystack.
+
+## Technical Architecture
+- Built with: Next.js 16, Three.js, GSAP, Tailwind CSS v4, Anthropic Claude 3.5.
+- Deployment: Vercel / High-performance global CDN.
+
+---
+© 2026 Orisun Igbomina Broadcasting Network. All rights reserved.
