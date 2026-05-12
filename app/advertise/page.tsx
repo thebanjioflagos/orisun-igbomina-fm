@@ -1,6 +1,6 @@
 import { BarChart3, Users, Zap, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import AdBookingForm from "@/components/sections/AdBookingForm";
+import AdBookingFormDynamic from "@/components/sections/AdBookingFormDynamic";
 
 const stats = [
   { label: "Weekly Listeners", value: "200,000+", icon: Users },
@@ -112,7 +112,7 @@ export default function AdvertisePage() {
           <h2 className="text-4xl md:text-6xl font-fraunces text-orisun-ivory italic">Secure Your Slot</h2>
           <p className="text-orisun-ivory/60 font-dm-sans mt-4">Select a package and complete your booking in seconds.</p>
         </div>
-        <AdBookingForm />
+        <AdBookingFormDynamic />
       </section>
     </main>
   );

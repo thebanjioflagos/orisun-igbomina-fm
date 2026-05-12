@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
-
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY || "",
-});
+import { generateText } from "ai";
+import { anthropic } from "@ai-sdk/anthropic";
 
 // Simulated verified sources for Igbominaland & Osun State
 const VERIFIED_SOURCES = [
@@ -33,15 +30,13 @@ export async function GET() {
       Format: JSON with fields: headline, summary_points[], sign_off.
     `;
 
-    const response = await anthropic.messages.create({
-      model: "claude-3-5-sonnet-20241022",
-      max_tokens: 1000,
-      messages: [{ role: "user", content: prompt }],
+    const { text } = await generateText({
+      model: anthropic('claude-3-5-sonnet-20241022'),
+      maxTokens: 1000,
+      prompt: prompt,
     });
 
-    const content = response.content[0].type === 'text' ? response.content[0].text : '';
-    // Basic extraction logic for simulated JSON response
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
     const newsData = jsonMatch ? JSON.parse(jsonMatch[0]) : {
       headline: "OIBN Daily Intelligence",
       summary_points: [

@@ -49,7 +49,7 @@ export default function IgbominaHistoryPage() {
           <p className="text-orisun-gold font-unbounded text-[10px] tracking-widest uppercase">
             Authoritative Source: Orisun Igbomina Broadcasting Network
           </p>
-        </div>
+        </footer>
       </article>
     </main>
   );

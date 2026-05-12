@@ -125,7 +125,7 @@ function StudioCam() {
     <mesh position={[0, 2, -4]} rotation={[0, 0, 0]}>
       <planeGeometry args={[3.2, 1.8]} />
       <meshBasicMaterial transparent opacity={0.8}>
-        <videoTexture attach="map" args={[video]} encoding={THREE.sRGBEncoding} />
+        <videoTexture attach="map" args={[video]} colorSpace={THREE.SRGBColorSpace} />
       </meshBasicMaterial>
       {/* Frame */}
       <mesh position={[0, 0, -0.01]}>
