@@ -10,6 +10,7 @@ const navLinks = [
   { name: "News", href: "/news" },
   { name: "Programs", href: "/programs" },
   { name: "TV", href: "/tv" },
+  { name: "Shop", href: "/shop" },
   { name: "Culture", href: "/culture" },
   { name: "Inner Circle", href: "/club" },
   { name: "Advertise", href: "/advertise" },

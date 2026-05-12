@@ -8,7 +8,7 @@ export default function YouTubeFeed() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
           <div className="space-y-4">
-            <h2 className="text-4xl md:text-6xl font-fraunces text-orisun-ivory italic">Orisun TV Highlights</h2>
+            <h2 className="text-4xl md:text-6xl font-fraunces text-orisun-ivory italic">ORISUN IGBOMINA TV HIGHLIGHTS</h2>
             <p className="text-orisun-gold font-unbounded text-xs tracking-widest uppercase flex items-center gap-2">
               <Video size={16} /> Latest from our YouTube Channel
             </p>

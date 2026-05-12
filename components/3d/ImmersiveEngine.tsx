@@ -107,6 +107,35 @@ function FloatingArtifacts() {
   );
 }
 
+function StudioCam() {
+  const video = useMemo(() => {
+    if (typeof window === 'undefined') return null;
+    const vid = document.createElement('video');
+    vid.src = "https://assets.mixkit.co/videos/preview/mixkit-recording-studio-with-microphones-and-equipment-43400-large.mp4"; // Placeholder live stream
+    vid.crossOrigin = "Anonymous";
+    vid.loop = true;
+    vid.muted = true;
+    vid.play().catch(() => {});
+    return vid;
+  }, []);
+
+  if (!video) return null;
+
+  return (
+    <mesh position={[0, 2, -4]} rotation={[0, 0, 0]}>
+      <planeGeometry args={[3.2, 1.8]} />
+      <meshBasicMaterial transparent opacity={0.8}>
+        <videoTexture attach="map" args={[video]} encoding={THREE.sRGBEncoding} />
+      </meshBasicMaterial>
+      {/* Frame */}
+      <mesh position={[0, 0, -0.01]}>
+        <planeGeometry args={[3.4, 2.0]} />
+        <meshBasicMaterial color="#D4920A" transparent opacity={0.1} />
+      </mesh>
+    </mesh>
+  );
+}
+
 export default function ImmersiveEngine() {
   return (
     <div className="fixed inset-0 z-0 pointer-events-none bg-orisun-deep">
@@ -120,6 +149,9 @@ export default function ImmersiveEngine() {
         
         <CulturalParticles />
         <FloatingArtifacts />
+        <group>
+          <StudioCam />
+        </group>
 
         <EffectComposer disableNormalPass>
           <Bloom luminanceThreshold={0.4} mipmapBlur intensity={1.0} />

@@ -1,7 +1,7 @@
 {
   "name": "Orisun Igbomina FM 102.1",
   "short_name": "Orisun FM",
-  "description": "Originality At Its Peak. The authoritative voice of the Igbomina people.",
+  "description": "The authoritative voice of the Igbomina people. Live radio, culture, and community from Ila-Orangun.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1A0A00",
@@ -16,7 +16,20 @@
     {
       "src": "/images/logo.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Listen Live",
+      "url": "/listen",
+      "icons": [{ "src": "/file.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Orisun TV",
+      "url": "/tv",
+      "icons": [{ "src": "/file.svg", "sizes": "96x96" }]
     }
   ]
 }

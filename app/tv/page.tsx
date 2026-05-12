@@ -6,7 +6,7 @@ export default function TVPage() {
       <div className="max-w-7xl mx-auto px-6">
         <header className="mb-12 flex flex-col md:flex-row justify-between items-end gap-6">
           <div className="space-y-4">
-            <h1 className="text-6xl md:text-8xl font-fraunces text-orisun-ivory italic">Orisun TV</h1>
+            <h1 className="text-6xl md:text-8xl font-fraunces text-orisun-ivory italic">ORISUN IGBOMINA TV</h1>
             <p className="text-orisun-gold font-unbounded text-xs tracking-widest uppercase flex items-center gap-2">
               <span className="w-2 h-2 bg-orisun-crimson rounded-full animate-pulse" /> Live Broadcast Preview
             </p>

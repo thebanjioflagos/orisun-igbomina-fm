@@ -8,10 +8,12 @@ import HeritageTimeline from "@/components/sections/HeritageTimeline";
 import YouTubeFeed from "@/components/sections/YouTubeFeed";
 import SocialPulse from "@/components/sections/SocialPulse";
 import NewsShowcase from "@/components/sections/NewsShowcase";
+import DailyBriefing from "@/components/sections/DailyBriefing";
 
 export default function HomeContent() {
   return (
     <SmoothScroll>
+      <DailyBriefing />
       <main className="relative min-h-screen bg-transparent overflow-hidden">
         {/* Cinematic WebGL Engine (Fixed Background) */}
         <ImmersiveEngine />
