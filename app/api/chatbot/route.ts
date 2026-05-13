@@ -40,7 +40,7 @@ function isRateLimited(ip: string): boolean {
 const MAX_MESSAGE_LENGTH = 2_000;
 const MAX_MESSAGES_IN_HISTORY = 20;
 
-function sanitiseMessages(raw: unknown): { role: string; content: string }[] {
+function sanitiseMessages(raw: unknown): { role: 'user' | 'assistant'; content: string }[] {
   if (!Array.isArray(raw)) throw new Error('Invalid payload');
 
   return raw.slice(-MAX_MESSAGES_IN_HISTORY).map((m) => {
@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing messages field' }, { status: 400 });
     }
 
-    let messages: { role: string; content: string }[];
+    let messages: { role: 'user' | 'assistant'; content: string }[];
     try {
       messages = sanitiseMessages((body as any).messages);
     } catch {
@@ -137,7 +137,6 @@ export async function POST(req: NextRequest) {
     // 5. Call Anthropic
     const result = streamText({
       model: anthropic('claude-3-5-sonnet-20240620'),
-      maxTokens: 512, // prevent runaway / expensive responses
       system: `
         You are "Orisun," the AI Cultural Guide for Orisun Igbomina Broadcasting Network (102.1 FM),
         headquartered in Ila-Orangun, Osun State, Nigeria. You are warm, knowledgeable, and speak
@@ -161,7 +160,7 @@ export async function POST(req: NextRequest) {
       messages,
     });
 
-    return result.toDataStreamResponse();
+    return result.toTextStreamResponse();
 
   } catch (error) {
     // Never leak internal error details to the client

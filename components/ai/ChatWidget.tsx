@@ -1,15 +1,17 @@
 "use client";
 
-import { useChat } from "@ai-sdk/react";
+import { useChat, Message } from "@ai-sdk/react";
 import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send, Sparkles, User, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput } = useChat({
+  const chat = useChat({
     api: "/api/chatbot",
-  });
+  }) as any;
+  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput } = chat;
+  const typedMessages: Message[] = messages || [];
   
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -17,7 +19,7 @@ export default function ChatWidget() {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [typedMessages]);
 
   return (
     <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end">
@@ -45,7 +47,7 @@ export default function ChatWidget() {
             ref={scrollRef}
             className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-orisun-gold/20"
           >
-            {messages.length === 0 && (
+            {typedMessages.length === 0 && (
               <div className="text-center py-8 space-y-4">
                 <p className="text-orisun-ivory/40 text-xs font-dm-sans">
                   "E kaasan! I am Orisun. How can I help you explore Igbomina culture today?"
@@ -63,7 +65,7 @@ export default function ChatWidget() {
                 </div>
               </div>
             )}
-            {messages.map((m) => (
+            {typedMessages.map((m) => (
               <div
                 key={m.id}
                 className={cn(

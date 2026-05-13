@@ -11,17 +11,16 @@ export default function AdireParticles() {
   const positions = useMemo(() => {
     const pos = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount; i++) {
-      // Create a grid-like distribution with some noise to mimic fabric weave
       const x = (Math.random() - 0.5) * 20;
       const y = (Math.random() - 0.5) * 20;
-      const z = (Math.random() - 0.5) * 5 - 10; // Positioned behind the tower
+      const z = (Math.random() - 0.5) * 5 - 10;
       
       pos[i * 3] = x;
       pos[i * 3 + 1] = y;
       pos[i * 3 + 2] = z;
     }
     return pos;
-  }, []);
+  }, [particleCount]);
 
   useFrame((state) => {
     if (!pointsRef.current) return;
@@ -47,6 +46,7 @@ export default function AdireParticles() {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
+          args={[positions, 3]}
           count={particleCount}
           array={positions}
           itemSize={3}

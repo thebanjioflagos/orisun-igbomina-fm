@@ -32,7 +32,6 @@ export async function GET() {
 
     const { text } = await generateText({
       model: anthropic('claude-3-5-sonnet-20241022'),
-      maxTokens: 1000,
       prompt: prompt,
     });
 

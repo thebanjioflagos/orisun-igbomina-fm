@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import { EffectComposer, Bloom, Noise, Vignette } from "@react-three/postprocessing";
@@ -11,9 +11,11 @@ import { getParticleCount } from "@/lib/performance-config";
 
 function CulturalParticles() {
   const ref   = useRef<THREE.Points>(null);
-  const count = useMemo(() => getParticleCount(), []);
+  const count = getParticleCount();
 
-  const sphere = useMemo(() => {
+  const [sphere, setSphere] = useState<Float32Array | null>(null);
+
+  useEffect(() => {
     const positions = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
       const theta = 2 * Math.PI * Math.random();
@@ -23,8 +25,10 @@ function CulturalParticles() {
       positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
       positions[i * 3 + 2] = r * Math.cos(phi);
     }
-    return positions;
+    setSphere(positions);
   }, [count]);
+
+  if (!sphere) return null;
 
   useFrame((state, delta) => {
     if (!ref.current) return;
@@ -139,7 +143,7 @@ export default function ImmersiveEngine() {
         <FloatingArtifacts />
         <BrandedStudio />
 
-        <EffectComposer disableNormalPass>
+        <EffectComposer>
           <Bloom luminanceThreshold={0.4} mipmapBlur intensity={1.0} />
           <Noise opacity={0.03} />
           <Vignette eskil={false} offset={0.1} darkness={1.1} />

@@ -1,0 +1,200 @@
+﻿
+> orisun-igbomina-fm@0.1.0 lint
+> eslint
+
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\app\about\page.tsx
+  30:88   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  30:130  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\app\advertise\page.tsx
+  58:101  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\app\api\booking\route.ts
+  131:13  warning  'name' is assigned a value but never used          @typescript-eslint/no-unused-vars
+  131:26  warning  'businessName' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  135:22  error    Unexpected any. Specify a different type           @typescript-eslint/no-explicit-any
+  137:7   warning  'paymentData' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  138:19  error    Unexpected any. Specify a different type           @typescript-eslint/no-explicit-any
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\app\api\chatbot\route.ts
+  111:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\app\api\news-anchor\route.ts
+  6:7  warning  'VERIFIED_SOURCES' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\app\club\page.tsx
+  5:10  warning  'cn' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\app\contact\page.tsx
+  43:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\app\home-content.tsx
+  30:11  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\app\knowledge\igbomina-history\page.tsx
+  44:159  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  44:183  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\app\listen\page.tsx
+  47:49  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\app\listen\page.tsx:47:49
+  45 |                   )}
+  46 |                   style={{
+> 47 |                     height: isPlaying ? `${20 + Math.random() * 80}%` : "8px",
+     |                                                 ^^^^^^^^^^^^^ Cannot call impure function
+  48 |                     animationDelay: `${i * 0.05}s`
+  49 |                   }}
+  50 |                 />  react-hooks/purity
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\app\news\page.tsx
+  65:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\app\programs\page.tsx
+  1:10  warning  'cn' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\app\shop\page.tsx
+   4:10  warning  'ShoppingBag' is defined but never used                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+  72:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\3d\AdireParticles.tsx
+  15:18  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\3d\AdireParticles.tsx:15:18
+  13 |     for (let i = 0; i < particleCount; i++) {
+  14 |       // Create a grid-like distribution with some noise to mimic fabric weave
+> 15 |       const x = (Math.random() - 0.5) * 20;
+     |                  ^^^^^^^^^^^^^ Cannot call impure function
+  16 |       const y = (Math.random() - 0.5) * 20;
+  17 |       const z = (Math.random() - 0.5) * 5 - 10; // Positioned behind the tower
+  18 |         react-hooks/purity
+  16:18  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\3d\AdireParticles.tsx:16:18
+  14 |       // Create a grid-like distribution with some noise to mimic fabric weave
+  15 |       const x = (Math.random() - 0.5) * 20;
+> 16 |       const y = (Math.random() - 0.5) * 20;
+     |                  ^^^^^^^^^^^^^ Cannot call impure function
+  17 |       const z = (Math.random() - 0.5) * 5 - 10; // Positioned behind the tower
+  18 |       
+  19 |       pos[i * 3] = x;                          react-hooks/purity
+  17:18  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\3d\AdireParticles.tsx:17:18
+  15 |       const x = (Math.random() - 0.5) * 20;
+  16 |       const y = (Math.random() - 0.5) * 20;
+> 17 |       const z = (Math.random() - 0.5) * 5 - 10; // Positioned behind the tower
+     |                  ^^^^^^^^^^^^^ Cannot call impure function
+  18 |       
+  19 |       pos[i * 3] = x;
+  20 |       pos[i * 3 + 1] = y;                                                                               react-hooks/purity
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\3d\HeroScene.tsx
+  5:10  warning  'OrbitControls' is defined but never used  @typescript-eslint/no-unused-vars
+  5:57  warning  'Float' is defined but never used          @typescript-eslint/no-unused-vars
+  5:64  warning  'Text' is defined but never used           @typescript-eslint/no-unused-vars
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\3d\ImmersiveEngine.tsx
+   4:28  warning  'useThree' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+   8:10  warning  'useScroll' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+  19:35  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\3d\ImmersiveEngine.tsx:19:35
+  17 |     const positions = new Float32Array(count * 3);
+  18 |     for (let i = 0; i < count; i++) {
+> 19 |       const theta = 2 * Math.PI * Math.random();
+     |                                   ^^^^^^^^^^^^^ Cannot call impure function
+  20 |       const phi   = Math.acos(2 * Math.random() - 1);
+  21 |       const r     = Math.cbrt(Math.random()) * 2.5;
+  22 |       positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);                       react-hooks/purity
+  20:35  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\3d\ImmersiveEngine.tsx:20:35
+  18 |     for (let i = 0; i < count; i++) {
+  19 |       const theta = 2 * Math.PI * Math.random();
+> 20 |       const phi   = Math.acos(2 * Math.random() - 1);
+     |                                   ^^^^^^^^^^^^^ Cannot call impure function
+  21 |       const r     = Math.cbrt(Math.random()) * 2.5;
+  22 |       positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+  23 |       positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);        react-hooks/purity
+  21:31  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\3d\ImmersiveEngine.tsx:21:31
+  19 |       const theta = 2 * Math.PI * Math.random();
+  20 |       const phi   = Math.acos(2 * Math.random() - 1);
+> 21 |       const r     = Math.cbrt(Math.random()) * 2.5;
+     |                               ^^^^^^^^^^^^^ Cannot call impure function
+  22 |       positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+  23 |       positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+  24 |       positions[i * 3 + 2] = r * Math.cos(phi);  react-hooks/purity
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\ai\ChatWidget.tsx
+  51:19  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  51:93  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\audio\AudioEngine.tsx
+  41:6  warning  React Hook useEffect has missing dependencies: 'isMuted', 'setIsPlaying', and 'volume'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\audio\AudioPlayer.tsx
+  3:31  warning  'useMemo' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\sections\AdBookingForm.tsx
+  46:71  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\sections\AdBookingForm.tsx:46:71
+  44 |   const config = {
+  45 |     // Unique reference using crypto.randomUUID for collision safety
+> 46 |     reference:  typeof crypto !== 'undefined' ? crypto.randomUUID() : Date.now().toString(),
+     |                                                                       ^^^^^^^^^^ Cannot call impure function
+  47 |     email:      formData.email.trim(),
+  48 |     amount:     selectedPackage.price * 100, // kobo
+  49 |     publicKey:  PAYSTACK_PUBLIC_KEY,  react-hooks/purity
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\sections\HeritageTimeline.tsx
+  38:13  warning  'pin' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\sections\NewsShowcase.tsx
+   4:32  warning  'Tag' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  52:15  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\sections\SocialPulse.tsx
+  60:74   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  60:104  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\sections\YouTubeFeed.tsx
+  8:7  warning  'YOUTUBE_EMBED_URL' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\ui\ErrorBoundary.tsx
+  20:42  warning  '_' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\ui\Footer.tsx
+  21:15  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\ui\Navbar.tsx
+  49:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\components\ui\WhatsAppButton.tsx
+  3:10  warning  'MessageCircle' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\lenovo\Desktop\CybersecurityProjects\OrisunI\orisun-igbomina-fm\lib\security-logger.ts
+  23:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Ô£û 47 problems (22 errors, 25 warnings)
+

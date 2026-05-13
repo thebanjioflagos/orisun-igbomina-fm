@@ -1,0 +1,18 @@
+﻿app/api/chatbot/route.ts(161,7): error TS2322: Type '{ role: string; content: string; }[]' is not assignable to type 'ModelMessage[]'.
+  Type '{ role: string; content: string; }' is not assignable to type 'ModelMessage'.
+    Type '{ role: string; content: string; }' is not assignable to type 'ToolModelMessage'.
+      Types of property 'role' are incompatible.
+        Type 'string' is not assignable to type '"tool"'.
+app/api/chatbot/route.ts(164,19): error TS2551: Property 'toDataStreamResponse' does not exist on type 'StreamTextResult<ToolSet, Output<string, string, never>>'. Did you mean 'toTextStreamResponse'?
+app/api/contact/route.ts(18,61): error TS2339: Property 'errors' does not exist on type 'ZodError<{ name: string; email: string; subject: string; message: string; }>'.
+app/api/news-anchor/route.ts(35,7): error TS2353: Object literal may only specify known properties, and 'maxTokens' does not exist in type 'CallSettings & { system?: string | SystemModelMessage | SystemModelMessage[] | undefined; allowSystemInMessages?: boolean | undefined; } & { ...; } & { ...; }'.
+components/3d/AdireParticles.tsx(48,10): error TS2741: Property 'args' is missing in type '{ attach: string; count: number; array: Float32Array<ArrayBuffer>; itemSize: number; }' but required in type 'Mutable<Overwrite<Partial<Overwrite<BufferAttribute<BufferAttributeEventMap>, MathProps<BufferAttribute<BufferAttributeEventMap>> & ReactProps<...>>>, Omit<...>>>'.
+components/3d/ImmersiveEngine.tsx(142,25): error TS2322: Type '{ children: Element[]; disableNormalPass: true; }' is not assignable to type 'IntrinsicAttributes & EffectComposerProps & RefAttributes<EffectComposer>'.
+  Property 'disableNormalPass' does not exist on type 'IntrinsicAttributes & EffectComposerProps & RefAttributes<EffectComposer>'. Did you mean 'enableNormalPass'?
+components/ai/ChatWidget.tsx(10,21): error TS2339: Property 'input' does not exist on type 'UseChatHelpers<UIMessage<unknown, UIDataTypes, UITools>>'.
+components/ai/ChatWidget.tsx(10,28): error TS2339: Property 'handleInputChange' does not exist on type 'UseChatHelpers<UIMessage<unknown, UIDataTypes, UITools>>'.
+components/ai/ChatWidget.tsx(10,47): error TS2339: Property 'handleSubmit' does not exist on type 'UseChatHelpers<UIMessage<unknown, UIDataTypes, UITools>>'.
+components/ai/ChatWidget.tsx(10,61): error TS2339: Property 'isLoading' does not exist on type 'UseChatHelpers<UIMessage<unknown, UIDataTypes, UITools>>'.
+components/ai/ChatWidget.tsx(10,72): error TS2339: Property 'setInput' does not exist on type 'UseChatHelpers<UIMessage<unknown, UIDataTypes, UITools>>'.
+components/ai/ChatWidget.tsx(11,5): error TS2353: Object literal may only specify known properties, and 'api' does not exist in type 'UseChatOptions<UIMessage<unknown, UIDataTypes, UITools>>'.
+components/ai/ChatWidget.tsx(86,22): error TS2339: Property 'content' does not exist on type 'UIMessage<unknown, UIDataTypes, UITools>'.
