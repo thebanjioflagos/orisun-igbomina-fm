@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import ImmersiveEngine from "@/components/3d/ImmersiveEngine";
+import { Suspense } from "react";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import OnAirSchedule from "@/components/sections/OnAirSchedule";
 import HeritageTimeline from "@/components/sections/HeritageTimeline";
@@ -16,10 +17,16 @@ export default function HomeContent() {
       <DailyBriefing />
       <main className="relative min-h-screen bg-transparent overflow-hidden">
         {/* Cinematic WebGL Engine (Fixed Background) */}
-        <ImmersiveEngine />
+        <Suspense fallback={
+          <div className="absolute inset-0 bg-orisun-deep flex items-center justify-center">
+            <div className="w-16 h-16 border-4 border-orisun-gold/20 border-t-orisun-gold rounded-full animate-spin"></div>
+          </div>
+        }>
+          <ImmersiveEngine />
+        </Suspense>
 
         {/* Brand Banner Overlay */}
-        <div className="absolute inset-0 z-5 opacity-20 pointer-events-none">
+        <div className="absolute inset-0 z-[5] opacity-20 pointer-events-none">
           <img 
             src="/images/banner.jpg" 
             alt="Orisun FM Banner Background" 

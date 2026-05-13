@@ -236,7 +236,7 @@ export default function AdBookingForm() {
           </div>
           <h3 className="text-4xl font-fraunces text-orisun-ivory italic">Booking Confirmed!</h3>
           <p className="text-orisun-ivory/60 font-dm-sans max-w-sm mx-auto">
-            E kaasan! Our advertising team will contact you within 24 hours to finalise your creative material and schedule.
+            Ẹ kaabọ̀! Your booking is confirmed. Our advertising team will contact you within 24 hours to finalise your creative material and on-air schedule.
           </p>
           <button onClick={() => { setStep(1); setServerError(null); }} className="px-8 py-3 border border-orisun-gold text-orisun-gold font-unbounded text-[10px] tracking-widest uppercase">
             BOOK ANOTHER

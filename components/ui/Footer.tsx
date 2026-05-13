@@ -1,10 +1,19 @@
 import Link from "next/link";
-import { Radio, Link as LinkIcon, MessageSquare, Camera, Video, Mail, Phone, MapPin } from "lucide-react";
+import { Video, Mail, Phone, MapPin, MessageSquare } from "lucide-react";
+
+const footerLinks = [
+  { label: "About Us",          href: "/about"     },
+  { label: "Our Programs",      href: "/programs"  },
+  { label: "Culture & Heritage",href: "/culture"   },
+  { label: "Latest News",       href: "/news"      },
+  { label: "Contact Us",        href: "/contact"   },
+];
 
 export default function Footer() {
   return (
     <footer className="bg-orisun-deep border-t border-orisun-gold/20 pt-24 pb-12 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-24">
+
         {/* Brand */}
         <div className="space-y-6">
           <Link href="/" className="flex items-center gap-3">
@@ -17,21 +26,22 @@ export default function Footer() {
             </div>
           </Link>
           <p className="text-orisun-ivory/60 font-dm-sans leading-relaxed italic border-l-2 border-orisun-yellow pl-4">
-            "Originality At Its Peak...."
+            &ldquo;Originality At Its Peak&rdquo;
           </p>
+          {/* Social Links */}
           <div className="flex gap-4">
-            <a 
-              href="https://www.facebook.com/OrisunIgbominaFm/" 
-              target="_blank" 
+            <a
+              href="https://www.facebook.com/OrisunIgbominaFm/"
+              target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 border border-orisun-gold/20 flex items-center justify-center text-orisun-gold hover:bg-orisun-gold hover:text-orisun-deep transition-all"
               title="Follow us on Facebook"
             >
               <MessageSquare size={18} />
             </a>
-            <a 
-              href="https://www.youtube.com/@OrisunIgbomina" 
-              target="_blank" 
+            <a
+              href="https://www.youtube.com/@OrisunIgbomina"
+              target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 border border-orisun-gold/20 flex items-center justify-center text-orisun-gold hover:bg-orisun-gold hover:text-orisun-deep transition-all"
               title="Subscribe on YouTube"
@@ -41,14 +51,17 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Quick Links */}
+        {/* Quick Links — all wired to real pages */}
         <div>
           <h4 className="font-unbounded text-xs tracking-widest text-orisun-gold uppercase mb-8">Navigation</h4>
           <ul className="space-y-4">
-            {["About Us", "Our Programs", "Culture & Heritage", "Latest News", "Contact"].map((link) => (
-              <li key={link}>
-                <Link href="#" className="text-orisun-ivory/60 hover:text-orisun-gold transition-colors font-dm-sans">
-                  {link}
+            {footerLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="text-orisun-ivory/60 hover:text-orisun-gold transition-colors font-dm-sans"
+                >
+                  {link.label}
                 </Link>
               </li>
             ))}
@@ -61,51 +74,73 @@ export default function Footer() {
           <ul className="space-y-6">
             <li className="flex gap-4 text-orisun-ivory/60 font-dm-sans">
               <MapPin className="text-orisun-gold flex-shrink-0" size={20} />
-              <span>Ila-Orangun, Osun State,<br />Nigeria</span>
+              <span>Broadcasting House,<br />Ila-Orangun, Osun State,<br />Nigeria</span>
             </li>
             <li className="flex gap-4 text-orisun-ivory/60 font-dm-sans">
               <Phone className="text-orisun-gold flex-shrink-0" size={20} />
-              <span>+234 800 ORISUN FM</span>
+              {/* Placeholder — replace with real number before go-live */}
+              <a href="tel:+23408001021" className="hover:text-orisun-gold transition-colors">
+                +234 (0) 800 102 1021
+              </a>
             </li>
             <li className="flex gap-4 text-orisun-ivory/60 font-dm-sans">
               <Mail className="text-orisun-gold flex-shrink-0" size={20} />
-              <span>contact@orisunigbominafm.com</span>
+              <a href="mailto:info@orisunigbominafm.com" className="hover:text-orisun-gold transition-colors">
+                info@orisunigbominafm.com
+              </a>
             </li>
           </ul>
         </div>
 
-        {/* Newsletter */}
+        {/* Newsletter — wired to API */}
         <div>
           <h4 className="font-unbounded text-xs tracking-widest text-orisun-gold uppercase mb-8">Newsletter</h4>
           <p className="text-orisun-ivory/60 text-sm mb-6 font-dm-sans">
             Get the latest stories and cultural updates delivered to your inbox.
           </p>
-          <div className="flex border-b border-orisun-gold/40 py-2">
-            <input 
-              type="email" 
-              placeholder="Your email address" 
-              className="bg-transparent border-none outline-none text-orisun-ivory w-full placeholder:text-orisun-ivory/20 font-dm-sans"
-            />
-            <button className="text-orisun-gold font-unbounded text-[10px] tracking-widest">JOIN</button>
-          </div>
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const form  = e.currentTarget as HTMLFormElement;
+              const email = (form.elements.namedItem("email") as HTMLInputElement).value;
+              try {
+                await fetch("/api/newsletter", {
+                  method:  "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body:    JSON.stringify({ email }),
+                });
+                form.reset();
+              } catch {/* silent — server handles logging */}
+            }}
+          >
+            <div className="flex border-b border-orisun-gold/40 py-2">
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="Your email address"
+                className="bg-transparent border-none outline-none text-orisun-ivory w-full placeholder:text-orisun-ivory/20 font-dm-sans"
+              />
+              <button type="submit" className="text-orisun-gold font-unbounded text-[10px] tracking-widest hover:text-orisun-ivory transition-colors">
+                JOIN
+              </button>
+            </div>
+          </form>
         </div>
       </div>
 
+      {/* Bottom bar */}
       <div className="max-w-7xl mx-auto pt-12 border-t border-orisun-gold/10 flex flex-col md:flex-row justify-between items-center gap-6">
         <p className="text-orisun-ivory/40 text-[10px] font-unbounded tracking-widest uppercase">
-          © 2026 Orisun Igbomina Broadcasting Network. All rights reserved.
+          © {new Date().getFullYear()} Orisun Igbomina Broadcasting Network (OIBN). All rights reserved.
         </p>
-        <div className="flex flex-col items-center md:items-end gap-3">
-          <div className="flex flex-col items-center md:items-end group cursor-default">
-            <p className="text-orisun-gold font-unbounded text-[9px] tracking-[0.4em] uppercase mb-1">Digital Design & Development</p>
-            <h4 className="text-white font-unbounded text-lg md:text-xl font-bold tracking-tighter uppercase leading-none">
-              THE <span className="text-orisun-gold">BIGBANG</span> COMPANY
-            </h4>
-          </div>
-          <div className="flex gap-8 mt-4">
-            <Link href="#" className="text-orisun-ivory/40 text-[10px] font-unbounded tracking-widest hover:text-orisun-gold uppercase transition-colors">Privacy Policy</Link>
-            <Link href="#" className="text-orisun-ivory/40 text-[10px] font-unbounded tracking-widest hover:text-orisun-gold uppercase transition-colors">Terms of Service</Link>
-          </div>
+        <div className="flex gap-8">
+          <Link href="/privacy" className="text-orisun-ivory/40 text-[10px] font-unbounded tracking-widest hover:text-orisun-gold uppercase transition-colors">
+            Privacy Policy
+          </Link>
+          <Link href="/terms" className="text-orisun-ivory/40 text-[10px] font-unbounded tracking-widest hover:text-orisun-gold uppercase transition-colors">
+            Terms of Service
+          </Link>
         </div>
       </div>
     </footer>

@@ -5,52 +5,35 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import { EffectComposer, Bloom, Noise, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
-import { useScroll } from "framer-motion";
+import { useScroll } from "@react-three/drei";
 import { AdaptiveDpr, PerformanceMonitor } from "@react-three/drei";
 import { getParticleCount } from "@/lib/performance-config";
 
 function CulturalParticles() {
-  const ref = useRef<any>();
+  const ref   = useRef<THREE.Points>(null);
   const count = useMemo(() => getParticleCount(), []);
-  // Generate particles in a sphere using standard Math
+
   const sphere = useMemo(() => {
     const positions = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      const u = Math.random();
-      const v = Math.random();
-      const theta = 2 * Math.PI * u;
-      const phi = Math.acos(2 * v - 1);
-      const r = Math.cbrt(Math.random()) * 2.5;
-      
-      positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      const theta = 2 * Math.PI * Math.random();
+      const phi   = Math.acos(2 * Math.random() - 1);
+      const r     = Math.cbrt(Math.random()) * 2.5;
+      positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
       positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
       positions[i * 3 + 2] = r * Math.cos(phi);
     }
     return positions;
-  }, []);
-  
-  const { scrollYProgress } = useScroll();
-  const { mouse, viewport } = useThree();
+  }, [count]);
 
   useFrame((state, delta) => {
     if (!ref.current) return;
-    
-    // Rotate the entire particle system slowly
     ref.current.rotation.y -= delta / 10;
     ref.current.rotation.x -= delta / 15;
 
-    // Scroll Reactivity: Move particles based on page scroll
-    const scroll = scrollYProgress.get();
-    ref.current.position.y = scroll * 5; // Move up as we scroll down
-    ref.current.rotation.z = scroll * Math.PI; // Twist as we scroll
-
-    // Mouse Parallax: subtle movement based on mouse position
+    const { mouse, viewport } = state;
     const targetX = (mouse.x * viewport.width) / 10;
-    const targetY = (mouse.y * viewport.height) / 10;
-    
     ref.current.position.x += (targetX - ref.current.position.x) * 0.02;
-    // Don't override Y entirely so scroll still works, just add a subtle offset
-    ref.current.position.z += (targetY - ref.current.position.z) * 0.02;
   });
 
   return (
@@ -71,34 +54,30 @@ function CulturalParticles() {
 
 function FloatingArtifacts() {
   const groupRef = useRef<THREE.Group>(null);
-  const { scrollYProgress } = useScroll();
 
   useFrame((state, delta) => {
     if (!groupRef.current) return;
-    const scroll = scrollYProgress.get();
-    
-    // Camera dive effect based on scroll
-    state.camera.position.z = THREE.MathUtils.lerp(state.camera.position.z, 5 - scroll * 10, 0.05);
-    state.camera.lookAt(0, 0, 0);
-
-    // Rotate inner rings
     groupRef.current.children.forEach((mesh, i) => {
-      mesh.rotation.x += delta * (i % 2 === 0 ? 0.2 : -0.2);
-      mesh.rotation.y += delta * (i % 3 === 0 ? 0.1 : -0.1);
+      (mesh as THREE.Mesh).rotation.x += delta * (i % 2 === 0 ? 0.2 : -0.2);
+      (mesh as THREE.Mesh).rotation.y += delta * (i % 3 === 0 ? 0.1 : -0.1);
     });
+    // Gentle camera drift — no aggressive scroll-driven dive
+    state.camera.position.z = THREE.MathUtils.lerp(state.camera.position.z, 5, 0.01);
   });
 
   return (
     <group ref={groupRef}>
-      {/* Abstract representations of soundwaves / cultural rings */}
+      {/* Sound-wave / cultural rings — Orisun crimson */}
       <mesh position={[0, 0, -2]}>
         <torusGeometry args={[3, 0.02, 16, 100]} />
         <meshStandardMaterial color="#B91C1C" emissive="#B91C1C" emissiveIntensity={2} toneMapped={false} />
       </mesh>
+      {/* Outer gold ring */}
       <mesh position={[0, 0, -4]} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[5, 0.05, 16, 100]} />
         <meshStandardMaterial color="#D4920A" emissive="#D4920A" emissiveIntensity={1.5} toneMapped={false} />
       </mesh>
+      {/* Wireframe deep ring */}
       <mesh position={[0, 0, -6]} rotation={[0, Math.PI / 4, 0]}>
         <torusGeometry args={[7, 0.02, 16, 100]} />
         <meshStandardMaterial color="#1A0A00" emissive="#B91C1C" emissiveIntensity={0.5} wireframe />
@@ -107,30 +86,35 @@ function FloatingArtifacts() {
   );
 }
 
-function StudioCam() {
-  const video = useMemo(() => {
-    if (typeof window === 'undefined') return null;
-    const vid = document.createElement('video');
-    vid.src = "https://assets.mixkit.co/videos/preview/mixkit-recording-studio-with-microphones-and-equipment-43400-large.mp4"; // Placeholder live stream
-    vid.crossOrigin = "Anonymous";
-    vid.loop = true;
-    vid.muted = true;
-    vid.play().catch(() => {});
-    return vid;
-  }, []);
+/**
+ * BrandedStudio — replaces the Mixkit commercial video.
+ * Shows a pulsing Orisun branded plane in the 3D scene.
+ * Swap the texture for a real studio photo/video when assets are ready.
+ */
+function BrandedStudio() {
+  const meshRef = useRef<THREE.Mesh>(null);
 
-  if (!video) return null;
+  useFrame((state) => {
+    if (!meshRef.current) return;
+    // Gentle hover float
+    meshRef.current.position.y = 2 + Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
+  });
 
   return (
-    <mesh position={[0, 2, -4]} rotation={[0, 0, 0]}>
+    <mesh ref={meshRef} position={[0, 2, -4]}>
       <planeGeometry args={[3.2, 1.8]} />
-      <meshBasicMaterial transparent opacity={0.8}>
-        <videoTexture attach="map" args={[video]} colorSpace={THREE.SRGBColorSpace} />
-      </meshBasicMaterial>
-      {/* Frame */}
+      <meshStandardMaterial
+        color="#D4920A"
+        emissive="#B91C1C"
+        emissiveIntensity={0.3}
+        transparent
+        opacity={0.12}
+        side={THREE.DoubleSide}
+      />
+      {/* Gold frame */}
       <mesh position={[0, 0, -0.01]}>
         <planeGeometry args={[3.4, 2.0]} />
-        <meshBasicMaterial color="#D4920A" transparent opacity={0.1} />
+        <meshBasicMaterial color="#D4920A" transparent opacity={0.08} />
       </mesh>
     </mesh>
   );
@@ -143,15 +127,17 @@ export default function ImmersiveEngine() {
         <color attach="background" args={["#1A0A00"]} />
         <ambientLight intensity={0.5} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} color="#D4920A" />
-        
-        <PerformanceMonitor onDecline={() => console.log('Performance declining, reducing quality...')} />
+
+        <PerformanceMonitor
+          onDecline={() => {
+            // Silently adapt — no console noise in production
+          }}
+        />
         <AdaptiveDpr pixelated />
-        
+
         <CulturalParticles />
         <FloatingArtifacts />
-        <group>
-          <StudioCam />
-        </group>
+        <BrandedStudio />
 
         <EffectComposer disableNormalPass>
           <Bloom luminanceThreshold={0.4} mipmapBlur intensity={1.0} />
