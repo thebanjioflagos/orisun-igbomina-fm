@@ -28,10 +28,8 @@ function CulturalParticles() {
     setSphere(positions);
   }, [count]);
 
-  if (!sphere) return null;
-
   useFrame((state, delta) => {
-    if (!ref.current) return;
+    if (!ref.current || !sphere) return;
     ref.current.rotation.y -= delta / 10;
     ref.current.rotation.x -= delta / 15;
 
@@ -39,6 +37,8 @@ function CulturalParticles() {
     const targetX = (mouse.x * viewport.width) / 10;
     ref.current.position.x += (targetX - ref.current.position.x) * 0.02;
   });
+
+  if (!sphere) return null;
 
   return (
     <group rotation={[0, 0, Math.PI / 4]}>

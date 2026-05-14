@@ -2,12 +2,12 @@ import type { NextConfig } from "next";
 
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.paystack.co https://api.paystack.co https://www.youtube.com https://s.ytimg.com;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.paystack.co https://api.paystack.co https://www.youtube.com https://s.ytimg.com https://va.vercel-scripts.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com;
   img-src 'self' data: blob: https: https://i.ytimg.com;
   media-src 'self' blob: https: https://icecast.radiofrance.fr;
-  connect-src 'self' https://api.anthropic.com https://api.paystack.co https://checkout.paystack.com https://icecast.radiofrance.fr;
+  connect-src 'self' https://api.anthropic.com https://api.paystack.co https://checkout.paystack.com https://icecast.radiofrance.fr https://vitals.vercel-insights.com;
   frame-src https://checkout.paystack.com https://www.youtube.com https://www.facebook.com https://web.facebook.com;
   object-src 'none';
   base-uri 'self';
