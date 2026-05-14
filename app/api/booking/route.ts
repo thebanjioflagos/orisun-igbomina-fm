@@ -35,6 +35,8 @@ function isRateLimited(ip: string): boolean {
 // ============================================================
 // VALIDATION SCHEMA
 // ============================================================
+const PACKAGES = ['bronze', 'silver', 'gold'] as const;
+
 const BookingSchema = z.object({
   name: z
     .string()
@@ -46,7 +48,7 @@ const BookingSchema = z.object({
     .string()
     .min(2, 'Business name must be at least 2 characters')
     .max(200, 'Business name too long'),
-  packageId: z.enum(['bronze', 'silver', 'gold'], {
+  packageId: z.enum(PACKAGES, {
     message: 'Invalid package selected',
   }),
   paystackReference: z.string().min(1, 'Payment reference is required'),

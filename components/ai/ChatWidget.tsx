@@ -1,17 +1,16 @@
 "use client";
 
-import { useChat, Message } from "@ai-sdk/react";
+import { useChat } from "@ai-sdk/react";
 import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send, Sparkles, User, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const chat = useChat({
-    api: "/api/chatbot",
-  }) as any;
-  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput } = chat;
-  const typedMessages: Message[] = messages || [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const chat = useChat({ api: "/api/chatbot" } as any) as any;
+  const { input, handleInputChange, handleSubmit, isLoading, setInput } = chat;
+  const typedMessages: Array<{ id: string; role: string; content: string }> = chat.messages || [];
   
   const scrollRef = useRef<HTMLDivElement>(null);
 
