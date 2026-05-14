@@ -133,9 +133,14 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="max-w-7xl mx-auto pt-12 border-t border-orisun-gold/10 flex flex-col md:flex-row justify-between items-center gap-6">
-        <p className="text-orisun-ivory/40 text-[10px] font-unbounded tracking-widest uppercase">
-          © {new Date().getFullYear()} Orisun Igbomina Broadcasting Network (OIBN). All rights reserved.
-        </p>
+        <div className="flex flex-col gap-2 text-center md:text-left">
+          <p className="text-orisun-ivory/40 text-[10px] font-unbounded tracking-widest uppercase">
+            © {new Date().getFullYear()} Orisun Igbomina Broadcasting Network (OIBN). All rights reserved.
+          </p>
+          <p className="text-orisun-gold/60 text-[8px] font-unbounded tracking-[0.3em] uppercase">
+            Engineered by <span className="text-orisun-gold font-bold">THE BIGBANG COMPANY</span>
+          </p>
+        </div>
         <div className="flex gap-8">
           <Link href="/privacy" className="text-orisun-ivory/40 text-[10px] font-unbounded tracking-widest hover:text-orisun-gold uppercase transition-colors">
             Privacy Policy
