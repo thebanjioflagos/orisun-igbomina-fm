@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import ImmersiveEngine from "@/components/3d/ImmersiveEngine";
+import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import OnAirSchedule from "@/components/sections/OnAirSchedule";
@@ -12,6 +12,10 @@ import NewsShowcase from "@/components/sections/NewsShowcase";
 import DailyBriefing from "@/components/sections/DailyBriefing";
 import Link from "next/link";
 import { Eye, Zap, Radio, ShieldCheck } from "lucide-react";
+
+const ImmersiveEngine = dynamic(() => import("@/components/3d/ImmersiveEngine"), {
+  ssr: false,
+});
 
 export default function HomeContent() {
   return (
