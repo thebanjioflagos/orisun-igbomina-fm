@@ -2,7 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useRef } from "react";
-import { OrbitControls, PerspectiveCamera, Environment, Float, Text, Points, PointMaterial } from "@react-three/drei";
+import { PerspectiveCamera, Environment, Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
 import AdireParticles from "./AdireParticles";
 
@@ -55,7 +55,6 @@ export default function HeroScene() {
               depthWrite={false}
             />
           </Points>
-          
           <Environment preset="night" />
         </Suspense>
       </Canvas>

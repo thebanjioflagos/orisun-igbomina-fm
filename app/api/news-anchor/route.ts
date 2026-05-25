@@ -1,6 +1,10 @@
-import { NextResponse } from "next/server";
+import pino from 'pino';
+import logger from '@/lib/logger';
 import { generateText } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
+import { NextResponse } from 'next/server';
+const apiKey = process.env.ANTHROPIC_API_KEY;
+
 
 // Simulated verified sources for Igbominaland & Osun State
 const VERIFIED_SOURCES = [
@@ -30,6 +34,20 @@ export async function GET() {
       Format: JSON with fields: headline, summary_points[], sign_off.
     `;
 
+    // If we don't have an Anthropic API key, return mock data immediately
+    if (!apiKey) {
+      const mockData = {
+        headline: "OIBN Daily Intelligence",
+        summary_points: [
+          "New agricultural initiatives launched in Ila-Orangun central.",
+          "Cultural preparations begin for the annual heritage festival.",
+          "OIBN extends broadcast reach to neighboring communities."
+        ],
+        sign_off: "E nle o, Igbomina a gbe wa!"
+      };
+      return NextResponse.json(mockData);
+    }
+
     const { text } = await generateText({
       model: anthropic('claude-3-5-sonnet-20241022'),
       prompt: prompt,
@@ -48,7 +66,7 @@ export async function GET() {
 
     return NextResponse.json(newsData);
   } catch (error) {
-    console.error("News Anchor API Error:", error);
+    logger.error(error as Error, "News Anchor API Error");
     return NextResponse.json({ error: "Failed to fetch briefing" }, { status: 500 });
   }
 }

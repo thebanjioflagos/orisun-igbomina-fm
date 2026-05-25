@@ -20,7 +20,7 @@ interface SecurityEvent {
   eventType: SecurityEventType;
   severity: Severity;
   endpoint: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export const securityLogger = {

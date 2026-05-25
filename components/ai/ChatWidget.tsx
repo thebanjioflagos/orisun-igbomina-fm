@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { MessageCircle, X, Send, Sparkles, User, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -10,7 +10,8 @@ export default function ChatWidget() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const chat = useChat({ api: "/api/chatbot" } as any) as any;
   const { input, handleInputChange, handleSubmit, isLoading, setInput } = chat;
-  const typedMessages: Array<{ id: string; role: string; content: string }> = chat.messages || [];
+  const rawMessages = chat.messages;
+  const typedMessages: Array<{ id: string; role: string; content: string }> = useMemo(() => rawMessages || [], [rawMessages]);
   
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +50,7 @@ export default function ChatWidget() {
             {typedMessages.length === 0 && (
               <div className="text-center py-8 space-y-4">
                 <p className="text-orisun-ivory/40 text-xs font-dm-sans">
-                  "E kaasan! I am Orisun. How can I help you explore Igbomina culture today?"
+                  &quot;E kaasan! I am Orisun. How can I help you explore Igbomina culture today?&quot;
                 </p>
                 <div className="flex flex-wrap justify-center gap-2">
                   {["Tell me about Ila-Orangun", "What's on air?", "Who are the Igbomina?"].map((q) => (

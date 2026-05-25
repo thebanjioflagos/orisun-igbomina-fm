@@ -1,0 +1,44 @@
+/* ─── Admin Light Theme Override ─────────────────────────────────────────── */
+.admin-light .text-orisun-ivory {
+  color: #1a0a00 !important;
+}
+.admin-light .text-orisun-ivory\/80 {
+  color: rgba(26, 10, 0, 0.8) !important;
+}
+.admin-light .text-orisun-ivory\/70 {
+  color: rgba(26, 10, 0, 0.7) !important;
+}
+.admin-light .text-orisun-ivory\/60 {
+  color: rgba(26, 10, 0, 0.6) !important;
+}
+.admin-light .text-orisun-ivory\/50 {
+  color: rgba(26, 10, 0, 0.5) !important;
+}
+.admin-light .text-orisun-ivory\/40 {
+  color: rgba(26, 10, 0, 0.4) !important;
+}
+.admin-light .text-orisun-ivory\/30 {
+  color: rgba(26, 10, 0, 0.3) !important;
+}
+.admin-light .text-orisun-ivory\/20 {
+  color: rgba(26, 10, 0, 0.2) !important;
+}
+.admin-light .bg-white\/5 {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+.admin-light .bg-white\/10 {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+.admin-light .border-white\/5 {
+  border-color: rgba(0, 0, 0, 0.05) !important;
+}
+.admin-light .border-white\/10 {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+.admin-light .bg-\[\#0a0500\] {
+  background-color: transparent !important;
+}
+.admin-light .bg-black\/50 {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  color: #1a0a00 !important;
+}

@@ -1,11 +1,11 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 
 import { useRef, useMemo, useState, useEffect } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import { EffectComposer, Bloom, Noise, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
-import { useScroll } from "@react-three/drei";
 import { AdaptiveDpr, PerformanceMonitor } from "@react-three/drei";
 import { getParticleCount } from "@/lib/performance-config";
 
@@ -13,9 +13,7 @@ function CulturalParticles() {
   const ref   = useRef<THREE.Points>(null);
   const count = getParticleCount();
 
-  const [sphere, setSphere] = useState<Float32Array | null>(null);
-
-  useEffect(() => {
+  const sphere = useMemo(() => {
     const positions = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
       const theta = 2 * Math.PI * Math.random();
@@ -25,7 +23,7 @@ function CulturalParticles() {
       positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
       positions[i * 3 + 2] = r * Math.cos(phi);
     }
-    setSphere(positions);
+    return positions;
   }, [count]);
 
   useFrame((state, delta) => {

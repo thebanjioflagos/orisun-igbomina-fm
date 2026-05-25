@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { Play, Pause, Volume2, VolumeX, Maximize2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Play, Pause, Volume2, VolumeX, Maximize2, Video, VideoOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/lib/audio-store";
 import Link from "next/link";
@@ -16,6 +16,7 @@ export default function AudioPlayer() {
   const { togglePlay, toggleMute } = useAudioStore((s) => s.actions);
 
   const [showPlayer, setShowPlayer] = useState(false);
+  const [visualRadio, setVisualRadio] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setShowPlayer(window.scrollY > 300);
@@ -26,8 +27,24 @@ export default function AudioPlayer() {
   if (!showPlayer) return null;
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-2xl animate-in fade-in slide-in-from-bottom-10 duration-700">
-      <div className="bg-orisun-deep/95 backdrop-blur-xl border border-orisun-gold/30 rounded-full p-2 flex items-center gap-4 shadow-2xl shadow-orisun-gold/10">
+    <div className={cn(
+      "fixed left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-2xl animate-in fade-in slide-in-from-bottom-10 duration-700 flex flex-col items-center gap-4",
+      visualRadio ? "bottom-[10vh] max-w-4xl" : "bottom-6"
+    )}>
+      {visualRadio && (
+        <div className="w-full aspect-video bg-black rounded-xl overflow-hidden border border-orisun-gold/40 shadow-2xl shadow-orisun-gold/20">
+          <iframe 
+            width="100%" 
+            height="100%" 
+            src="https://www.youtube.com/embed/live_stream?channel=UCYOURCHANNELID" 
+            title="Orisun FM Live Studio" 
+            frameBorder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowFullScreen
+          ></iframe>
+        </div>
+      )}
+      <div className="w-full bg-orisun-deep/95 backdrop-blur-xl border border-orisun-gold/30 rounded-full p-2 flex items-center gap-4 shadow-2xl shadow-orisun-gold/10">
 
         {/* Play/Pause Button */}
         <button
@@ -74,6 +91,16 @@ export default function AudioPlayer() {
 
         {/* Controls */}
         <div className="flex items-center gap-3 pr-4">
+          <button
+            onClick={() => setVisualRadio(!visualRadio)}
+            aria-label={visualRadio ? "Disable Visual Radio" : "Enable Visual Radio"}
+            className={cn(
+              "transition-colors",
+              visualRadio ? "text-orisun-gold" : "text-orisun-ivory/60 hover:text-orisun-gold"
+            )}
+          >
+            {visualRadio ? <Video size={18} /> : <VideoOff size={18} />}
+          </button>
           <button
             onClick={toggleMute}
             aria-label={isMuted ? "Unmute" : "Mute"}

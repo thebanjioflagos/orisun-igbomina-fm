@@ -2,6 +2,11 @@
 
 import { motion } from "framer-motion";
 import { ShoppingBag, Star, ShieldCheck, ArrowRight } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const ProductCheckout = dynamic(() => import("@/components/shop/ProductCheckout"), {
+  ssr: false,
+});
 
 const products = [
   {
@@ -87,9 +92,7 @@ export default function ShopPage() {
                 <p className="text-orisun-ivory/40 text-sm font-dm-sans">by {product.artisan}</p>
               </div>
 
-              <button className="w-full py-4 border border-orisun-gold/40 text-orisun-gold font-unbounded text-[10px] font-bold tracking-widest hover:bg-orisun-gold hover:text-orisun-deep transition-all flex items-center justify-center gap-2">
-                VIEW DETAILS <ArrowRight size={14} />
-              </button>
+              <ProductCheckout product={product} />
             </motion.div>
           ))}
         </div>

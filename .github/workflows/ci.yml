@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    name: Lint · Type-check · Test · Build
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── Checkout ──────────────────────────────────────────────────────────
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ── Node setup ────────────────────────────────────────────────────────
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      # ── Install ───────────────────────────────────────────────────────────
+      - name: Install dependencies
+        run: npm ci
+
+      # ── Lint ──────────────────────────────────────────────────────────────
+      - name: ESLint
+        run: npm run lint
+
+      # ── Type-check ────────────────────────────────────────────────────────
+      - name: TypeScript type-check
+        run: npx tsc --noEmit
+
+      # ── Security audit ────────────────────────────────────────────────────
+      - name: npm audit (high severity)
+        run: npm audit --audit-level=high
+        continue-on-error: true   # report but don't block on known issues
+
+      # ── Unit / integration tests ──────────────────────────────────────────
+      - name: Jest tests
+        run: npm test -- --ci --coverage --forceExit
+        env:
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: ci-test-secret-minimum-32-chars-ok
+
+      # ── Production build ──────────────────────────────────────────────────
+      - name: Next.js build
+        run: npm run build
+        env:
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: ci-test-secret-minimum-32-chars-ok
+          NEXT_PUBLIC_GTM_ID: GTM-XXXXXXX

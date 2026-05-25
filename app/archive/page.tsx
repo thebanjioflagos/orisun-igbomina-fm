@@ -1,24 +1,33 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, FileText, Share2, Calendar } from "lucide-react";
+import { Search, FileText, Share2, Calendar, Download, Clock } from "lucide-react";
 
 const archivedShows = [
   {
     title: "Morning Dew: The History of the Orangun Lineage",
     date: "May 10, 2026",
     summary: "A deep dive into the 12th-century migration patterns that led to the founding of Ila-Orangun.",
-    category: "Culture"
+    category: "Culture",
+    duration: "45:00",
+    size: "42 MB",
+    id: "pod-101"
   },
   {
     title: "Igbomina Voice: Agricultural Reforms in Osun",
     date: "May 08, 2026",
     summary: "Automated transcription of the interview with the Commissioner of Agriculture regarding new rice hub projects.",
-    category: "News"
+    category: "News",
+    duration: "1:20:00",
+    size: "85 MB",
+    id: "pod-102"
   }
 ];
 
 export default function ArchivePage() {
+  const handleDownload = (id: string) => {
+    alert(`Downloading podcast ${id}... Ensure you are on Wi-Fi!`);
+  };
   return (
     <main className="min-h-screen bg-orisun-deep pt-32 pb-24 px-6">
       <div className="max-w-4xl mx-auto space-y-16">
@@ -60,13 +69,27 @@ export default function ArchivePage() {
               <p className="text-orisun-ivory/60 font-dm-sans leading-relaxed mb-6">
                 {show.summary}
               </p>
-              <div className="flex gap-6">
-                <button className="flex items-center gap-2 text-orisun-gold font-unbounded text-[10px] tracking-widest uppercase">
-                  <FileText size={14} /> READ TRANSCRIPT
-                </button>
-                <button className="flex items-center gap-2 text-orisun-ivory/40 font-unbounded text-[10px] tracking-widest uppercase">
-                  <Share2 size={14} /> SHARE SNIPPET
-                </button>
+              <div className="flex flex-wrap items-center justify-between gap-6">
+                <div className="flex gap-6">
+                  <button className="flex items-center gap-2 text-orisun-gold font-unbounded text-[10px] tracking-widest uppercase">
+                    <FileText size={14} /> TRANSCRIPT
+                  </button>
+                  <button className="flex items-center gap-2 text-orisun-ivory/40 hover:text-orisun-gold font-unbounded text-[10px] tracking-widest uppercase transition-colors">
+                    <Share2 size={14} /> SHARE
+                  </button>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                  <span className="flex items-center gap-1 text-orisun-ivory/40 font-dm-sans text-xs">
+                    <Clock size={12} /> {show.duration}
+                  </span>
+                  <button 
+                    onClick={() => handleDownload(show.id)}
+                    className="flex items-center gap-2 px-4 py-2 border border-orisun-gold text-orisun-gold font-unbounded text-[10px] tracking-widest uppercase hover:bg-orisun-gold hover:text-orisun-deep transition-all"
+                  >
+                    <Download size={14} /> {show.size}
+                  </button>
+                </div>
               </div>
             </motion.div>
           ))}

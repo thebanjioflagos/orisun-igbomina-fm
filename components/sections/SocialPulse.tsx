@@ -57,7 +57,7 @@ export default function SocialPulse() {
                   </div>
                   <span className="text-[10px] font-unbounded text-orisun-ivory/40 uppercase">Engagement</span>
                 </div>
-                <p className="text-sm font-dm-sans text-orisun-ivory/80">"Sharing our stories globally!"</p>
+                <p className="text-sm font-dm-sans text-orisun-ivory/80">&quot;Sharing our stories globally!&quot;</p>
               </div>
               <div className="bg-orisun-gold/10 border border-orisun-gold/30 p-6 rounded-sm space-y-4">
                 <div className="flex items-center gap-3">

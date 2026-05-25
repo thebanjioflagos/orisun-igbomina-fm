@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Unbounded, DM_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import Script from "next/script";
 
 const fraunces     = Fraunces({ subsets: ["latin"], variable: "--font-fraunces",      display: "swap" });
 const unbounded    = Unbounded({ subsets: ["latin"], variable: "--font-unbounded",     display: "swap" });
@@ -9,6 +8,7 @@ const dmSans       = DM_Sans({ subsets: ["latin"],  variable: "--font-dm-sans", 
 const jetbrainsMono= JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono", display: "swap" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://orisun-igbomina-fm.vercel.app"),
   title:       "Orisun Igbomina FM 102.1 — Ila-Orangun, Osun State",
   description: "Sharing Stories, Celebrating Culture, Empowering Communities. The authoritative voice of the Igbomina people.",
   keywords:    "Orisun Igbomina FM, 102.1 FM Ila-Orangun, Igbomina radio, Osun State news, Igbomina culture, Yoruba radio Nigeria",
@@ -66,17 +66,17 @@ const jsonLd = {
   ],
 };
 
-import Navbar          from "@/components/ui/Navbar";
-import AudioPlayer     from "@/components/audio/AudioPlayer";
 import AudioEngine     from "@/components/audio/AudioEngine";
-import Footer          from "@/components/ui/Footer";
-import ChatWidget      from "@/components/ai/ChatWidget";
-import NewsletterPopup from "@/components/engagement/NewsletterPopup";
+import GlobalUIWrapper from "@/components/ui/GlobalUIWrapper";
 import PageTransition  from "@/components/ui/PageTransition";
 import ErrorBoundary   from "@/components/ui/ErrorBoundary";
 import WhatsAppButton  from "@/components/ui/WhatsAppButton";
+import { GoogleTagManager } from '@next/third-parties/google';
+
+import AuthProvider from "@/app/providers/AuthProvider";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-XXXXXXX';
   return (
     <html lang="en-NG">
       <head>
@@ -86,28 +86,19 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
+      <GoogleTagManager gtmId={gtmId} />
       <body
         className={`${fraunces.variable} ${unbounded.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased`}
       >
-        <ErrorBoundary>
-          <AudioEngine />
-          <Navbar />
-          <PageTransition>
-            {children}
-          </PageTransition>
-          <Footer />
-          <AudioPlayer />
-          <WhatsAppButton />
-          <ChatWidget />
-          <NewsletterPopup />
-        </ErrorBoundary>
-
-        {/* Vercel Analytics — lightweight, no cookie banner needed */}
-        <Script
-          src="https://va.vercel-scripts.com/v1/analytics.js"
-          strategy="afterInteractive"
-          data-endpoint="/api/_vercel/analytics"
-        />
+        <AuthProvider>
+          <ErrorBoundary>
+            <AudioEngine />
+            <PageTransition>
+              {children}
+            </PageTransition>
+            <GlobalUIWrapper />
+          </ErrorBoundary>
+        </AuthProvider>
       </body>
     </html>
   );

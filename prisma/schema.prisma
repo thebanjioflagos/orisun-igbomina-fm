@@ -1,0 +1,151 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(CORRESPONDENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts       Post[]
+  programmes  Programme[]
+  audioFiles  AudioFile[]
+}
+
+enum Role {
+  ADMIN
+  PRESENTER
+  CORRESPONDENT
+}
+
+model Post {
+  id        String     @id @default(cuid())
+  title     String
+  slug      String     @unique
+  content   String
+  image     String?
+  status    PostStatus @default(DRAFT)
+  authorId  String
+  author    User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+enum PostStatus {
+  DRAFT
+  UNDER_REVIEW
+  PUBLISHED
+}
+
+model Dedication {
+  id          String           @id @default(cuid())
+  sender      String
+  phone       String?
+  message     String
+  songRequest String?
+  status      DedicationStatus @default(PENDING)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+enum DedicationStatus {
+  PENDING
+  APPROVED
+  READ_ON_AIR
+  REJECTED
+}
+
+model Newsletter {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Programme {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  day         DayOfWeek
+  startTime   String   // "08:00"
+  endTime     String   // "10:00"
+  presenterId String?
+  presenter   User?    @relation(fields: [presenterId], references: [id])
+  isLive      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+model AudioFile {
+  id        String   @id @default(cuid())
+  title     String
+  filename  String
+  url       String
+  duration  Int?     // seconds
+  uploadedBy String
+  uploader  User     @relation(fields: [uploadedBy], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model AdBooking {
+  id                String          @id @default(cuid())
+  businessName      String
+  contactEmail      String
+  packageId         String
+  paystackReference String          @unique
+  status            AdBookingStatus @default(PENDING)
+  createdAt         DateTime        @default(now())
+}
+
+enum AdBookingStatus { 
+  PENDING 
+  CONFIRMED 
+  LIVE 
+  COMPLETED 
+  CANCELLED 
+}
+
+model EyeWitnessReport {
+  id           String       @id @default(cuid())
+  reporterName String
+  reporterEmail String?
+  reporterPhone String?
+  title        String
+  description  String
+  location     String?
+  mediaUrl     String?      // uploaded image or video link
+  status       ReportStatus @default(PENDING)
+  pinnedToTicker Boolean    @default(false)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+enum ReportStatus {
+  PENDING
+  APPROVED
+  CONVERTED_TO_POST
+  REJECTED
+}

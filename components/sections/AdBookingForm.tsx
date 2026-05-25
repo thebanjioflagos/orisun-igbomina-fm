@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { usePaystackPayment } from "react-paystack";
 import { adPackages, formatNaira, PAYSTACK_PUBLIC_KEY } from "@/lib/paystack";
 import { CheckCircle2, ChevronRight, ChevronLeft, CreditCard, AlertCircle } from "lucide-react";
@@ -31,6 +31,12 @@ export default function AdBookingForm() {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [serverError, setServerError] = useState<string | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [paymentReference, setPaymentReference] = useState("");
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setPaymentReference(typeof crypto !== 'undefined' ? crypto.randomUUID() : Date.now().toString());
+  }, []);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -41,19 +47,20 @@ export default function AdBookingForm() {
 
   const selectedPackage = adPackages.find((p) => p.id === formData.packageId)!;
 
-  const config = {
-    // Unique reference using crypto.randomUUID for collision safety
-    reference:  typeof crypto !== 'undefined' ? crypto.randomUUID() : Date.now().toString(),
-    email:      formData.email.trim(),
-    amount:     selectedPackage.price * 100, // kobo
-    publicKey:  PAYSTACK_PUBLIC_KEY,
-    metadata: {
-      custom_fields: [
-        { display_name: 'Business Name', variable_name: 'business_name', value: formData.businessName.trim() },
-        { display_name: 'Package',       variable_name: 'package',       value: selectedPackage.name },
-      ],
-    },
-  };
+  const config = useMemo(() => {
+    return {
+      reference:  paymentReference,
+      email:      formData.email.trim(),
+      amount:     selectedPackage.price * 100, // kobo
+      publicKey:  PAYSTACK_PUBLIC_KEY,
+      metadata: {
+        custom_fields: [
+          { display_name: 'Business Name', variable_name: 'business_name', value: formData.businessName.trim() },
+          { display_name: 'Package',       variable_name: 'package',       value: selectedPackage.name },
+        ],
+      },
+    };
+  }, [formData.email, formData.businessName, selectedPackage, paymentReference]);
 
   const initializePayment = usePaystackPayment(config);
 
@@ -157,27 +164,65 @@ export default function AdBookingForm() {
         <div className="space-y-8 animate-in fade-in slide-in-from-right-4">
           <h3 className="text-3xl font-fraunces text-orisun-ivory italic">Business Details</h3>
           <div className="space-y-6">
-            {(['name', 'email', 'businessName'] as const).map((field) => (
-              <div key={field} className="space-y-1">
-                <input
-                  type={field === 'email' ? 'email' : 'text'}
-                  placeholder={field === 'name' ? 'Full Name' : field === 'email' ? 'Email Address' : 'Business Name'}
-                  autoComplete={field === 'email' ? 'email' : 'off'}
-                  maxLength={field === 'businessName' ? 200 : 100}
-                  className={cn(
-                    'w-full bg-transparent border-b py-4 outline-none text-orisun-ivory font-dm-sans',
-                    fieldErrors[field] ? 'border-red-500' : 'border-orisun-gold/40 focus:border-orisun-gold',
-                  )}
-                  value={formData[field]}
-                  onChange={(e) => setField(field, e.target.value)}
-                />
-                {fieldErrors[field] && (
-                  <p className="text-red-400 text-xs flex items-center gap-1">
-                    <AlertCircle size={12} /> {fieldErrors[field]}
-                  </p>
+            <div className="space-y-1">
+              <input
+                type="text"
+                placeholder="Full Name"
+                autoComplete="off"
+                maxLength={100}
+                className={cn(
+                  'w-full bg-transparent border-b py-4 outline-none text-orisun-ivory font-dm-sans',
+                  fieldErrors.name ? 'border-red-500' : 'border-orisun-gold/40 focus:border-orisun-gold',
                 )}
-              </div>
-            ))}
+                value={formData.name}
+                onChange={(e) => setField('name', e.target.value)}
+              />
+              {fieldErrors.name && (
+                <p className="text-red-400 text-xs flex items-center gap-1">
+                  <AlertCircle size={12} /> {fieldErrors.name}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-1">
+              <input
+                type="email"
+                placeholder="Email Address"
+                autoComplete="email"
+                maxLength={100}
+                className={cn(
+                  'w-full bg-transparent border-b py-4 outline-none text-orisun-ivory font-dm-sans',
+                  fieldErrors.email ? 'border-red-500' : 'border-orisun-gold/40 focus:border-orisun-gold',
+                )}
+                value={formData.email}
+                onChange={(e) => setField('email', e.target.value)}
+              />
+              {fieldErrors.email && (
+                <p className="text-red-400 text-xs flex items-center gap-1">
+                  <AlertCircle size={12} /> {fieldErrors.email}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-1">
+              <input
+                type="text"
+                placeholder="Business Name"
+                autoComplete="off"
+                maxLength={200}
+                className={cn(
+                  'w-full bg-transparent border-b py-4 outline-none text-orisun-ivory font-dm-sans',
+                  fieldErrors.businessName ? 'border-red-500' : 'border-orisun-gold/40 focus:border-orisun-gold',
+                )}
+                value={formData.businessName}
+                onChange={(e) => setField('businessName', e.target.value)}
+              />
+              {fieldErrors.businessName && (
+                <p className="text-red-400 text-xs flex items-center gap-1">
+                  <AlertCircle size={12} /> {fieldErrors.businessName}
+                </p>
+              )}
+            </div>
           </div>
           <div className="flex gap-4">
             <button onClick={handleBack} className="p-4 border border-orisun-gold/40 text-orisun-gold"><ChevronLeft size={20} /></button>
