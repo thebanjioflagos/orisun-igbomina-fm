@@ -37,7 +37,7 @@ export default async function AdBookingsManager() {
               </div>
               <p className="text-orisun-ivory/60 text-xs font-dm-sans uppercase tracking-widest">Pending Verification</p>
             </div>
-            <p className="font-fraunces text-2xl text-orisun-ivory">{bookings.filter(b => b.status === "PENDING").length}</p>
+            <p className="font-fraunces text-2xl text-orisun-ivory">{bookings.filter((b: { status: string }) => b.status === "PENDING").length}</p>
           </div>
           <div className="bg-white/[0.02] border border-green-500/10 rounded-sm p-5">
             <div className="flex items-center gap-3 mb-2">
@@ -46,7 +46,7 @@ export default async function AdBookingsManager() {
               </div>
               <p className="text-orisun-ivory/60 text-xs font-dm-sans uppercase tracking-widest">Active Ads</p>
             </div>
-            <p className="font-fraunces text-2xl text-orisun-ivory">{bookings.filter(b => b.status === "LIVE").length}</p>
+            <p className="font-fraunces text-2xl text-orisun-ivory">{bookings.filter((b: { status: string }) => b.status === "LIVE").length}</p>
           </div>
         </div>
 
