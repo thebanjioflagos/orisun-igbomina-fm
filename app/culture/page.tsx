@@ -3,7 +3,7 @@ import HeritageTimeline from "@/components/sections/HeritageTimeline";
 import { BookOpen, Music, Users, Landmark } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Igbomina Heritage & Culture Hub | Orisun FM",
+  title: "Igbomina Heritage & Culture Hub | Orisun Igbomina FM 102.1",
   description: "Explore the rich history, Oriki, and festivals of the Igbomina people. From the Orangun of Ila to modern traditions.",
 };
 

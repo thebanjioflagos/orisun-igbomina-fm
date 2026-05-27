@@ -2,15 +2,15 @@
 
 /* ─── Design Tokens ──────────────────────────────────────────────────────── */
 @theme {
-  --color-orisun-deep:    #1A0A00;
-  --color-orisun-earth:   #8B3A0F;
-  --color-orisun-gold:    #D4920A;
-  --color-orisun-ivory:   #F5EDD6;
-  --color-orisun-forest:  #1B4332;
-  --color-orisun-adire:   #2E3A6E;
-  --color-orisun-crimson: #B91C1C;
-  --color-orisun-yellow:  #EAB308;
-  --color-orisun-signal:  #00D4AA;
+  --color-orisun-deep:    var(--orisun-deep);
+  --color-orisun-earth:   var(--orisun-earth);
+  --color-orisun-gold:    var(--orisun-gold);
+  --color-orisun-ivory:   var(--orisun-ivory);
+  --color-orisun-forest:  var(--orisun-forest);
+  --color-orisun-adire:   var(--orisun-adire);
+  --color-orisun-crimson: var(--orisun-crimson);
+  --color-orisun-yellow:  var(--orisun-yellow);
+  --color-orisun-signal:  var(--orisun-signal);
 
   --font-fraunces:      var(--font-fraunces);
   --font-unbounded:     var(--font-unbounded);
@@ -40,6 +40,85 @@
 
   --background: var(--orisun-deep);
   --foreground: var(--orisun-ivory);
+
+  /* Comfort Mode tokens (overridden when .comfort-mode is active) */
+  --surface-overlay: rgba(0, 0, 0, 0);
+  --text-boost: 1;
+}
+
+/* ─── Comfort Mode: softer contrast, warmer tones, boosted readability ─── */
+html.comfort-mode {
+  --background: #2C1200;        /* slightly lighter deep for the page bg */
+  --surface-overlay: rgba(255, 220, 150, 0.04); /* warm wash over surfaces */
+  --text-boost: 1.08;
+}
+
+html.comfort-mode body {
+  background: var(--background);
+}
+
+/* Comfort mode: boost readability of body text slightly */
+html.comfort-mode p,
+html.comfort-mode li,
+html.comfort-mode span {
+  letter-spacing: 0.01em;
+  line-height: 1.75;
+}
+
+/* Comfort mode: sections get a subtle warm lift so walls of text pop */
+html.comfort-mode section,
+html.comfort-mode article {
+  background-color: var(--surface-overlay);
+}
+
+/* ─── Ancestral Light Theme: Ivory Background, Deep Chocolate Text ─── */
+html.light-theme {
+  --orisun-deep:    #F5EDD6;   /* Luxurious warm ivory */
+  --orisun-ivory:   #1A0A00;   /* Deep rich chocolate brown for high-contrast text */
+  --orisun-earth:   #8B3A0F;   /* Earthy accent */
+  --orisun-adire:   #3B4B8B;   /* Indigo adire accent adjusted for light background */
+  --background: var(--orisun-deep);
+  --foreground: var(--orisun-ivory);
+}
+
+html.light-theme body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Ensure glassmorphic panel elements adapt beautifully in Light Theme */
+html.light-theme .bg-orisun-deep\/90,
+html.light-theme .bg-orisun-deep\/95,
+html.light-theme .bg-orisun-deep\/80,
+html.light-theme .bg-orisun-deep\/70 {
+  background-color: rgba(245, 237, 214, 0.85) !important;
+  backdrop-filter: blur(20px);
+  border-color: rgba(139, 58, 15, 0.25) !important;
+}
+
+/* Correct card borders and spacing dividers */
+html.light-theme .border-orisun-gold\/10,
+html.light-theme .border-orisun-gold\/20,
+html.light-theme .border-orisun-gold\/30 {
+  border-color: rgba(212, 146, 10, 0.35) !important;
+}
+
+/* Adjust text contrasts in Light Theme */
+html.light-theme .text-orisun-ivory\/60,
+html.light-theme .text-orisun-ivory\/75,
+html.light-theme .text-orisun-ivory\/80,
+html.light-theme .text-orisun-ivory\/90 {
+  color: rgba(26, 10, 0, 0.75) !important;
+}
+
+html.light-theme .text-orisun-ivory {
+  color: var(--orisun-ivory) !important;
+}
+
+/* Keep the interactive elements prominent */
+html.light-theme .bg-orisun-gold {
+  background-color: var(--orisun-gold) !important;
+  color: #1A0A00 !important;
 }
 
 /* ─── Base Reset ─────────────────────────────────────────────────────────── */

@@ -262,12 +262,23 @@ export default function AdBookingForm() {
           <div className="flex gap-4">
             <button onClick={handleBack} className="p-4 border border-orisun-gold/40 text-orisun-gold"><ChevronLeft size={20} /></button>
             <button
-              disabled={isVerifying}
-              onClick={() => initializePayment({ onSuccess, onClose })}
+              disabled={isVerifying || !PAYSTACK_PUBLIC_KEY}
+              onClick={() => {
+                if (!PAYSTACK_PUBLIC_KEY) {
+                  setServerError('Payment gateway is not configured. Please contact the Orisun Igbomina FM team.');
+                  return;
+                }
+                try {
+                  initializePayment({ onSuccess, onClose });
+                } catch (err: unknown) {
+                  const msg = err instanceof Error ? err.message : 'Payment gateway failed to load. Please try again.';
+                  setServerError(msg);
+                }
+              }}
               className="flex-1 py-4 bg-orisun-crimson text-white font-unbounded font-bold text-xs tracking-widest flex items-center justify-center gap-2 disabled:opacity-60"
             >
               <CreditCard size={16} />
-              {isVerifying ? 'VERIFYING...' : 'SECURE PAYMENT'}
+              {isVerifying ? 'VERIFYING...' : !PAYSTACK_PUBLIC_KEY ? 'PAYMENT UNAVAILABLE' : 'SECURE PAYMENT'}
             </button>
           </div>
         </div>

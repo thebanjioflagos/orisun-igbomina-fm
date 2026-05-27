@@ -1,19 +1,35 @@
 "use client";
 
-import HeroScene from "@/components/3d/HeroScene";
+import dynamic from "next/dynamic";
 import { Play, Pause, Share2, Info, ListMusic } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/lib/audio-store";
 
+// Dynamically import HeroScene with SSR disabled to prevent Canvas/WebGL loading crashes on the server.
+const HeroScene = dynamic(() => import("@/components/3d/HeroScene"), {
+  ssr: false,
+});
+
+// Pre-computed stable bar heights for the 40 simulated waveform bars to prevent hydration mismatch errors.
+const WAVE_HEIGHTS = [
+  55, 90, 35, 80, 60, 45, 75, 50, 85, 65, 30, 95, 40, 85, 70, 50, 90, 60, 40, 70,
+  55, 90, 35, 80, 60, 45, 75, 50, 85, 65, 30, 95, 40, 85, 70, 50, 90, 60, 75, 45
+];
+
 export default function ListenPage() {
   const isPlaying = useAudioStore((state) => state.isPlaying);
+  const isImmersive = useAudioStore((state) => state.isImmersive);
   const currentTrack = useAudioStore((state) => state.currentTrack);
   const { togglePlay } = useAudioStore((state) => state.actions);
 
   return (
     <main className="relative h-screen w-full overflow-hidden bg-orisun-deep">
-      {/* 3D Immersive Background */}
-      <HeroScene />
+      {/* 3D Immersive Background or Fallback Gradient */}
+      {isImmersive ? (
+        <HeroScene />
+      ) : (
+        <div className="absolute inset-0 bg-gradient-to-b from-[#250d00] via-[#120500] to-[#0a0200]" />
+      )}
 
       {/* Glassmorphism Player Overlay */}
       <div className="absolute inset-0 flex items-center justify-center p-6 bg-orisun-deep/40 backdrop-blur-sm">
@@ -34,9 +50,9 @@ export default function ListenPage() {
               </p>
             </div>
 
-            {/* Simulated Waveform */}
+            {/* Simulated Waveform — uses stable pre-computed heights */}
             <div className="flex items-end gap-[4px] h-32 w-full">
-              {[...Array(40)].map((_, i) => (
+              {WAVE_HEIGHTS.map((h, i) => (
                 <div
                   key={i}
                   className={cn(
@@ -44,7 +60,7 @@ export default function ListenPage() {
                     isPlaying ? "animate-pulse" : "h-2"
                   )}
                   style={{
-                    height: isPlaying ? `${20 + Math.random() * 80}%` : "8px",
+                    height: isPlaying ? `${h}%` : "8px",
                     animationDelay: `${i * 0.05}s`
                   }}
                 />

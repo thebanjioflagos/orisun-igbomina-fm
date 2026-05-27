@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import AuthButton from "@/components/ui/AuthButton";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Menu, X, Play, Pause } from "lucide-react";
+import { Menu, X, Play, Pause, Sun, Moon, Layers, Volume2, VolumeX } from "lucide-react";
 import { useAudioStore } from "@/lib/audio-store";
+import { useJingleStore } from "@/lib/jingle-engine";
 
 const navLinks = [
   { name: "Home",         href: "/" },
@@ -23,10 +24,17 @@ const navLinks = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled]             = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isVisible, setIsVisible]               = useState(true);
   const pathname = usePathname();
 
-  const isPlaying    = useAudioStore((s) => s.isPlaying);
-  const { togglePlay } = useAudioStore((s) => s.actions);
+  const isImmersive    = useAudioStore((s) => s.isImmersive);
+  const isComfortMode  = useAudioStore((s) => s.isComfortMode);
+  const isLightTheme   = useAudioStore((s) => s.isLightTheme);
+  const isPlaying      = useAudioStore((s) => s.isPlaying);
+  const { togglePlay, toggleImmersive, toggleComfortMode, toggleLightTheme } = useAudioStore((s) => s.actions);
+
+  const sfxEnabled = useJingleStore((s) => s.sfxEnabled);
+  const toggleSfx = useJingleStore((s) => s.actions.toggleSfx);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -34,24 +42,50 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Scroll shadow
+  const lastScrollY = useRef(0);
+
+  // Scroll logic for shadow and hide-on-scroll-down
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Shadow background trigger
+      setIsScrolled(currentScrollY > 50);
+
+      // Collapsible logic
+      if (currentScrollY <= 10) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+        // Scrolling down -> hide navbar
+        setIsVisible(false);
+      } else {
+        // Scrolling up -> show navbar
+        setIsVisible(true);
+      }
+      
+      lastScrollY.current = currentScrollY;
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <nav
-      role="navigation"
-      aria-label="Main navigation"
-      className={cn(
-        "fixed top-0 left-0 w-full z-50 transition-all duration-500 px-6 py-4",
-        isScrolled
-          ? "bg-orisun-deep/90 backdrop-blur-md py-3 border-b border-orisun-gold/20"
-          : "bg-transparent"
-      )}
-    >
+    <>
+      {/* Spacer to prevent overlap with page content */}
+      <div className="h-[90px] w-full" aria-hidden="true" />
+      
+      <nav
+        role="navigation"
+        aria-label="Main navigation"
+        className={cn(
+          "fixed left-0 right-0 z-50 transition-all duration-500 mx-auto w-[96%] max-w-7xl",
+          isScrolled
+            ? "top-4 bg-black/50 backdrop-blur-xl py-3 px-6 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] rounded-2xl"
+            : "top-4 bg-black/30 backdrop-blur-md py-4 px-6 border border-white/5 rounded-2xl",
+          isVisible ? "translate-y-0" : "-translate-y-[150%]"
+        )}
+      >
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
 
         {/* ── Logo ─────────────────────────────────────────────────── */}
@@ -89,12 +123,89 @@ export default function Navbar() {
 
         {/* ── Desktop Right: Listen Live + Auth ────────────────────── */}
         <div className="hidden lg:flex items-center gap-3 shrink-0">
+          {/* ── Display Controls: 3D + Comfort + Theme ──────────────── */}
+          <div className="flex items-center gap-1 px-3 py-1.5 rounded-full border border-orisun-gold/20 bg-orisun-gold/5">
+            {/* 3D View toggle */}
+            <button
+              type="button"
+              onClick={toggleImmersive}
+              aria-label={isImmersive ? "Disable 3D view" : "Enable 3D view"}
+              title={isImmersive ? "3D view ON" : "3D view OFF"}
+              className={cn(
+                "flex items-center gap-1.5 px-2 py-1 rounded-full text-[9px] font-unbounded font-bold uppercase tracking-widest transition-all cursor-pointer",
+                isImmersive
+                  ? "bg-orisun-gold text-orisun-deep"
+                  : "text-orisun-gold/50 hover:text-orisun-gold"
+              )}
+            >
+              <Layers size={11} />
+              3D
+            </button>
+
+            <div className="w-px h-4 bg-orisun-gold/20" />
+
+            {/* SFX toggle */}
+            <button
+              type="button"
+              onClick={toggleSfx}
+              aria-label={sfxEnabled ? "Mute sound effects" : "Enable sound effects"}
+              title={sfxEnabled ? "SFX ON" : "SFX OFF"}
+              className={cn(
+                "flex items-center gap-1.5 px-2 py-1 rounded-full text-[9px] font-unbounded font-bold uppercase tracking-widest transition-all cursor-pointer",
+                sfxEnabled
+                  ? "bg-orisun-gold text-orisun-deep"
+                  : "text-orisun-gold/50 hover:text-orisun-gold"
+              )}
+            >
+              {sfxEnabled ? <Volume2 size={11} /> : <VolumeX size={11} />}
+              SFX
+            </button>
+
+            <div className="w-px h-4 bg-orisun-gold/20" />
+
+            {/* Comfort Mode toggle */}
+            <button
+              type="button"
+              onClick={toggleComfortMode}
+              aria-label={isComfortMode ? "Disable comfort mode" : "Enable comfort mode"}
+              title={isComfortMode ? "Comfort mode ON" : "Comfort mode OFF"}
+              className={cn(
+                "flex items-center gap-1.5 px-2 py-1 rounded-full text-[9px] font-unbounded font-bold uppercase tracking-widest transition-all cursor-pointer",
+                isComfortMode
+                  ? "bg-orisun-gold text-orisun-deep"
+                  : "text-orisun-gold/50 hover:text-orisun-gold"
+              )}
+            >
+              <Sun size={11} />
+              Ease
+            </button>
+
+            <div className="w-px h-4 bg-orisun-gold/20" />
+
+            {/* Light Theme toggle */}
+            <button
+              type="button"
+              onClick={toggleLightTheme}
+              aria-label={isLightTheme ? "Switch to dark theme" : "Switch to light theme"}
+              title={isLightTheme ? "Light theme ON" : "Dark theme ON"}
+              className={cn(
+                "flex items-center gap-1.5 px-2 py-1 rounded-full text-[9px] font-unbounded font-bold uppercase tracking-widest transition-all cursor-pointer",
+                isLightTheme
+                  ? "bg-orisun-gold text-orisun-deep"
+                  : "text-orisun-gold/50 hover:text-orisun-gold"
+              )}
+            >
+              {isLightTheme ? <Moon size={11} /> : <Sun size={11} />}
+              {isLightTheme ? "DARK" : "LIGHT"}
+            </button>
+          </div>
+
           <button
             type="button"
             onClick={togglePlay}
             aria-label={isPlaying ? "Pause live stream" : "Listen live"}
             className={cn(
-              "flex items-center gap-2 px-4 py-2 font-unbounded text-xs font-bold rounded-sm transition-all",
+              "flex items-center gap-2 px-4 py-2 font-unbounded text-xs font-bold rounded-sm transition-all cursor-pointer",
               isPlaying
                 ? "bg-orisun-gold text-orisun-deep"
                 : "bg-orisun-gold/10 border border-orisun-gold text-orisun-gold hover:bg-orisun-gold hover:text-orisun-deep"
@@ -144,7 +255,7 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div
           id="mobile-menu"
-          className="fixed inset-0 top-[68px] bg-orisun-deep z-40 flex flex-col items-center justify-center gap-8 p-8 lg:hidden"
+          className="fixed inset-0 top-[68px] bg-orisun-deep z-40 flex flex-col items-center justify-center gap-6 p-8 lg:hidden"
         >
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
@@ -153,7 +264,7 @@ export default function Navbar() {
                 key={link.name}
                 href={link.href}
                 className={cn(
-                  "text-3xl font-fraunces transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orisun-gold rounded-sm",
+                  "text-2xl font-fraunces transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orisun-gold rounded-sm",
                   isActive ? "text-orisun-gold" : "text-orisun-ivory hover:text-orisun-gold"
                 )}
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -162,6 +273,105 @@ export default function Navbar() {
               </Link>
             );
           })}
+
+          {/* Mobile Display Controls ─ 3D + Comfort Mode + Theme */}
+          <div className="w-full max-w-[280px] flex flex-col gap-2">
+            {/* 3D View */}
+            <div className="flex items-center justify-between px-4 py-2.5 border border-orisun-gold/20 bg-orisun-gold/5 rounded-sm">
+              <div className="flex items-center gap-2">
+                <Layers size={13} className="text-orisun-gold" />
+                <span className="text-[10px] font-unbounded text-orisun-gold uppercase tracking-widest font-bold">
+                  Immersive 3D
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={toggleImmersive}
+                aria-label={isImmersive ? "Disable 3D" : "Enable 3D"}
+                className={cn(
+                  "relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-orisun-gold",
+                  isImmersive ? "bg-orisun-gold" : "bg-white/10"
+                )}
+              >
+                <span className={cn(
+                  "inline-block h-3 w-3 transform rounded-full bg-orisun-deep transition-transform duration-300",
+                  isImmersive ? "translate-x-5" : "translate-x-1"
+                )} />
+              </button>
+            </div>
+
+            {/* Mobile SFX Toggle */}
+            <div className="flex items-center justify-between px-4 py-2.5 border border-orisun-gold/20 bg-orisun-gold/5 rounded-sm">
+              <div className="flex items-center gap-2">
+                {sfxEnabled ? <Volume2 size={13} className="text-orisun-gold" /> : <VolumeX size={13} className="text-orisun-gold" />}
+                <span className="text-[10px] font-unbounded text-orisun-gold uppercase tracking-widest font-bold">
+                  Sound Effects
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={toggleSfx}
+                aria-label={sfxEnabled ? "Disable SFX" : "Enable SFX"}
+                className={cn(
+                  "relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-orisun-gold",
+                  sfxEnabled ? "bg-orisun-gold" : "bg-white/10"
+                )}
+              >
+                <span className={cn(
+                  "inline-block h-3 w-3 transform rounded-full bg-orisun-deep transition-transform duration-300",
+                  sfxEnabled ? "translate-x-5" : "translate-x-1"
+                )} />
+              </button>
+            </div>
+
+            {/* Comfort Mode */}
+            <div className="flex items-center justify-between px-4 py-2.5 border border-orisun-gold/20 bg-orisun-gold/5 rounded-sm">
+              <div className="flex items-center gap-2">
+                <Sun size={13} className="text-orisun-gold" />
+                <span className="text-[10px] font-unbounded text-orisun-gold uppercase tracking-widest font-bold">
+                  Comfort Mode
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={toggleComfortMode}
+                aria-label={isComfortMode ? "Disable comfort mode" : "Enable comfort mode"}
+                className={cn(
+                  "relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-orisun-gold",
+                  isComfortMode ? "bg-orisun-gold" : "bg-white/10"
+                )}
+              >
+                <span className={cn(
+                  "inline-block h-3 w-3 transform rounded-full bg-orisun-deep transition-transform duration-300",
+                  isComfortMode ? "translate-x-5" : "translate-x-1"
+                )} />
+              </button>
+            </div>
+
+            {/* Light Theme */}
+            <div className="flex items-center justify-between px-4 py-2.5 border border-orisun-gold/20 bg-orisun-gold/5 rounded-sm">
+              <div className="flex items-center gap-2">
+                {isLightTheme ? <Moon size={13} className="text-orisun-gold" /> : <Sun size={13} className="text-orisun-gold" />}
+                <span className="text-[10px] font-unbounded text-orisun-gold uppercase tracking-widest font-bold">
+                  Light Theme
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={toggleLightTheme}
+                aria-label={isLightTheme ? "Disable Light Theme" : "Enable Light Theme"}
+                className={cn(
+                  "relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-orisun-gold",
+                  isLightTheme ? "bg-orisun-gold" : "bg-white/10"
+                )}
+              >
+                <span className={cn(
+                  "inline-block h-3 w-3 transform rounded-full bg-orisun-deep transition-transform duration-300",
+                  isLightTheme ? "translate-x-5" : "translate-x-1"
+                )} />
+              </button>
+            </div>
+          </div>
 
           {/* Mobile Auth Button */}
           <div className="mt-2">
@@ -184,5 +394,6 @@ export default function Navbar() {
         </div>
       )}
     </nav>
+    </>
   );
 }

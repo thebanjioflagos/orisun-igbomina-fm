@@ -5,7 +5,9 @@ import { prisma } from "@/lib/prisma";
 import { compare } from "bcryptjs";
 
 export async function authorizeCredentials(credentials: Record<string, string> | undefined) {
+  console.log("authorizeCredentials started for:", credentials?.email);
   if (!credentials?.email || !credentials?.password) {
+    console.log("Missing email or password");
     return null;
   }
   try {
@@ -13,12 +15,15 @@ export async function authorizeCredentials(credentials: Record<string, string> |
       where: { email: credentials.email },
     });
     if (!user) {
+      console.log("User not found in DB for email:", credentials.email);
       return null;
     }
     const isPasswordValid = await compare(credentials.password, user.password);
     if (!isPasswordValid) {
+      console.log("Password invalid for user:", credentials.email);
       return null;
     }
+    console.log("Login successful for user:", credentials.email);
     // Return user details for JWT mapping. Match session field shapes.
     return {
       id:    user.id,
@@ -27,7 +32,7 @@ export async function authorizeCredentials(credentials: Record<string, string> |
       role:  user.role.toLowerCase() as "admin" | "presenter" | "correspondent",
     };
   } catch (error) {
-    console.error("Auth Error:", error);
+    console.error("Auth Error details:", error);
     // If the database connection fails or queries crash, return null
     return null;
   }

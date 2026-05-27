@@ -11,7 +11,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { title, content, status, authorId } = await req.json();
+    const { title, content, status, authorId, image } = await req.json();
 
     if (!title || !content || !authorId) {
       return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
@@ -39,6 +39,7 @@ export async function POST(req: Request) {
         title,
         slug,
         content,
+        image,
         status: finalStatus,
         authorId,
       },

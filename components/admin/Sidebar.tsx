@@ -23,6 +23,7 @@ import {
   Moon,
   Menu,
   Eye,
+  Activity,
 } from "lucide-react";
 
 import type { LucideIcon } from "lucide-react";
@@ -47,6 +48,7 @@ const navItems: NavItem[] = [
   { label: "Analytics",      href: "/admin/analytics",    icon: BarChart3,       roles: ["admin"] },
   { label: "Staff",          href: "/admin/staff",        icon: Users,           roles: ["admin"] },
   { label: "Settings",       href: "/admin/settings",     icon: Settings,        roles: ["admin"] },
+  { label: "System Health",  href: "/admin/system",       icon: Activity,        roles: ["admin"] },
 ];
 
 interface SidebarProps {
@@ -77,7 +79,7 @@ export default function AdminSidebar({ pendingReports = 0 }: SidebarProps) {
             <Radio size={18} className="text-orisun-gold" />
           </div>
           <div className="min-w-0">
-            <p className={cn("font-fraunces font-bold text-sm leading-none truncate", isDark ? "text-orisun-ivory" : "text-gray-900")}>ORISUN FM</p>
+            <p className={cn("font-fraunces font-bold text-sm leading-none truncate", isDark ? "text-orisun-ivory" : "text-gray-900")}>ORISUN IGBOMINA FM</p>
             <p className="font-unbounded text-[8px] text-orisun-gold uppercase tracking-widest mt-0.5 truncate">Admin Panel</p>
           </div>
         </Link>

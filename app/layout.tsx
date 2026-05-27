@@ -66,11 +66,14 @@ const jsonLd = {
   ],
 };
 
-import AudioEngine     from "@/components/audio/AudioEngine";
-import GlobalUIWrapper from "@/components/ui/GlobalUIWrapper";
-import PageTransition  from "@/components/ui/PageTransition";
-import ErrorBoundary   from "@/components/ui/ErrorBoundary";
-import WhatsAppButton  from "@/components/ui/WhatsAppButton";
+import AudioEngine          from "@/components/audio/AudioEngine";
+import JingleProvider       from "@/components/audio/JingleProvider";
+import GlobalUIWrapper      from "@/components/ui/GlobalUIWrapper";
+import PageTransition       from "@/components/ui/PageTransition";
+import ErrorBoundary        from "@/components/ui/ErrorBoundary";
+import WhatsAppButton       from "@/components/ui/WhatsAppButton";
+import ComfortModeProvider  from "@/components/ui/ComfortModeProvider";
+import HolidayThemeEngine   from "@/components/ui/HolidayThemeEngine";
 import { GoogleTagManager } from '@next/third-parties/google';
 
 import AuthProvider from "@/app/providers/AuthProvider";
@@ -92,7 +95,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       >
         <AuthProvider>
           <ErrorBoundary>
+            <HolidayThemeEngine />
+            <ComfortModeProvider />
             <AudioEngine />
+            <JingleProvider />
             <PageTransition>
               {children}
             </PageTransition>

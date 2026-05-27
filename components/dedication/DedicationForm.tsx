@@ -4,6 +4,7 @@ import { useState } from "react";
 import { usePaystackPayment } from "react-paystack";
 import { Heart, Music, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import { useJingleStore } from "@/lib/jingle-engine";
 
 interface PaystackResponse {
   reference: string;
@@ -20,6 +21,7 @@ export default function DedicationForm() {
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const playJingle = useJingleStore((s) => s.actions.play);
 
   const amount = 1000 * 100; // ₦1,000 in kobo
 
@@ -42,6 +44,7 @@ export default function DedicationForm() {
       });
       if (res.ok) {
         setSuccess(true);
+        playJingle("dedicationThanks");
       } else {
         alert("Payment verified, but failed to save dedication. Please contact support.");
       }

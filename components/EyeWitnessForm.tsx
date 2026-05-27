@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { MapPin, Upload, User, Mail, Phone, FileText, Mic, Loader2, CheckCircle, AlertCircle, X } from "lucide-react";
+import { useJingleStore } from "@/lib/jingle-engine";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
@@ -11,6 +12,7 @@ export default function EyeWitnessForm() {
   const [mediaPreview, setMediaPreview] = useState<string | null>(null);
   const [mediaUrl, setMediaUrl] = useState<string>("");
   const fileRef = useRef<HTMLInputElement>(null);
+  const playJingle = useJingleStore((s) => s.actions.play);
 
   const [form, setForm] = useState({
     reporterName: "",
@@ -82,6 +84,7 @@ export default function EyeWitnessForm() {
       }
 
       setState("success");
+      playJingle("reportReceived");
     } catch (err: any) {
       setErrorMsg(err.message || "Something went wrong. Please try again.");
       setState("error");
@@ -97,7 +100,7 @@ export default function EyeWitnessForm() {
         </div>
         <h2 className="font-fraunces text-3xl font-bold text-orisun-ivory mb-3">Report Submitted!</h2>
         <p className="text-orisun-ivory/60 font-dm-sans max-w-md leading-relaxed mb-8">
-          Thank you for being the eyes and ears of your community. Our editorial team will review your report and may publish it on Orisun FM.
+          Thank you for being the eyes and ears of your community. Our editorial team will review your report and may publish it on Orisun Igbomina FM 102.1.
         </p>
         <button
           onClick={() => {
@@ -285,7 +288,7 @@ export default function EyeWitnessForm() {
       {/* Disclaimer */}
       <div className="bg-orisun-gold/5 border border-orisun-gold/15 rounded-xl p-5 text-orisun-ivory/60 text-sm font-dm-sans leading-relaxed">
         <strong className="text-orisun-gold font-unbounded text-xs tracking-widest block mb-2">EDITORIAL DISCLAIMER</strong>
-        By submitting this report, you confirm that the information and media you are sharing is accurate to the best of your knowledge. Orisun FM&apos;s editorial team will review all submissions before publication. False reports may be rejected.
+        By submitting this report, you confirm that the information and media you are sharing is accurate to the best of your knowledge. Orisun Igbomina FM 102.1&apos;s editorial team will review all submissions before publication. False reports may be rejected.
       </div>
 
       {/* Submit button */}

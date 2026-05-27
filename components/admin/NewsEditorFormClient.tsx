@@ -25,6 +25,8 @@ export default function NewsEditorFormClient({ post }: NewsEditorFormClientProps
   
   const [title, setTitle] = useState(post?.title || "");
   const [content, setContent] = useState(post?.content || "<p>Write your article here...</p>");
+  const [image, setImage] = useState(post?.image || "");
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<"DRAFT" | "UNDER_REVIEW" | "PUBLISHED">(
     (post?.status as "DRAFT" | "UNDER_REVIEW" | "PUBLISHED") || "DRAFT"
@@ -47,6 +49,7 @@ export default function NewsEditorFormClient({ post }: NewsEditorFormClientProps
         body: JSON.stringify({
           title,
           content,
+          image,
           status,
           authorId: session?.user?.id
         }),
@@ -121,12 +124,40 @@ export default function NewsEditorFormClient({ post }: NewsEditorFormClientProps
           />
         </div>
         
-        {/* Featured Image - Mockup for now */}
+        {/* Featured Image Upload */}
         <div>
           <label className="block text-orisun-ivory/60 text-xs font-dm-sans uppercase tracking-widest mb-2">Featured Image</label>
-          <div className="w-full h-32 border-2 border-dashed border-orisun-gold/20 rounded-sm bg-white/[0.01] flex flex-col items-center justify-center text-orisun-ivory/40 hover:bg-white/[0.03] hover:border-orisun-gold/40 transition-all cursor-pointer group">
-            <ImageIcon size={24} className="mb-2 group-hover:text-orisun-gold transition-colors" />
-            <span className="text-sm font-dm-sans">Click to upload featured image</span>
+          <div className="relative w-full h-48 border-2 border-dashed border-orisun-gold/20 rounded-sm bg-white/[0.01] flex flex-col items-center justify-center overflow-hidden hover:bg-white/[0.03] hover:border-orisun-gold/40 transition-all cursor-pointer group">
+            {image ? (
+              <img src={image} alt="Featured" className="w-full h-full object-cover" />
+            ) : (
+              <div className="flex flex-col items-center text-orisun-ivory/40 group-hover:text-orisun-gold transition-colors">
+                {uploadingImage ? <Loader2 size={24} className="mb-2 animate-spin" /> : <ImageIcon size={24} className="mb-2" />}
+                <span className="text-sm font-dm-sans">{uploadingImage ? "Uploading..." : "Click to upload featured image"}</span>
+              </div>
+            )}
+            <input 
+              type="file" 
+              accept="image/*"
+              className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                setUploadingImage(true);
+                try {
+                  const fd = new FormData();
+                  fd.append("file", file);
+                  const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+                  if (!res.ok) throw new Error("Upload failed");
+                  const data = await res.json();
+                  setImage(data.url);
+                } catch (err: any) {
+                  alert(err.message);
+                } finally {
+                  setUploadingImage(false);
+                }
+              }}
+            />
           </div>
         </div>
 

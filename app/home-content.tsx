@@ -12,36 +12,57 @@ import NewsShowcase from "@/components/sections/NewsShowcase";
 import DailyBriefing from "@/components/sections/DailyBriefing";
 import Link from "next/link";
 import { Eye, Zap, Radio, ShieldCheck } from "lucide-react";
+import { useAudioStore } from "@/lib/audio-store";
+import { useJingleStore } from "@/lib/jingle-engine";
 
 const ImmersiveEngine = dynamic(() => import("@/components/3d/ImmersiveEngine"), {
   ssr: false,
 });
 
 export default function HomeContent() {
+  const isImmersive = useAudioStore((s) => s.isImmersive);
+  const isPlaying   = useAudioStore((s) => s.isPlaying);
+  const { togglePlay } = useAudioStore((s) => s.actions);
+  const playJingle = useJingleStore((s) => s.actions.play);
+
+  const handleListenLive = () => {
+    if (!isPlaying) {
+      // Play the station ID jingle before the stream starts
+      playJingle("stationId");
+      setTimeout(() => togglePlay(), 800); // Give the jingle a brief head start
+    } else {
+      togglePlay();
+    }
+  };
+
   return (
     <SmoothScroll>
       <DailyBriefing />
       <main className="relative min-h-screen bg-transparent overflow-hidden">
-        {/* Cinematic WebGL Engine (Fixed Background) */}
-        <Suspense fallback={
-          <div className="absolute inset-0 bg-orisun-deep flex items-center justify-center">
-            <div className="w-16 h-16 border-4 border-orisun-gold/20 border-t-orisun-gold rounded-full animate-spin"></div>
-          </div>
-        }>
-          <ImmersiveEngine />
-        </Suspense>
+        {/* Cinematic WebGL Engine (Fixed Background) or fallback Gradient */}
+        {isImmersive ? (
+          <Suspense fallback={
+            <div className="absolute inset-0 bg-orisun-deep flex items-center justify-center">
+              <div className="w-16 h-16 border-4 border-orisun-gold/20 border-t-orisun-gold rounded-full animate-spin"></div>
+            </div>
+          }>
+            <ImmersiveEngine />
+          </Suspense>
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-b from-[#250d00] via-[#120500] to-[#0a0200]" />
+        )}
 
         {/* Brand Banner Overlay */}
-        <div className="absolute inset-0 z-[5] opacity-20 pointer-events-none">
+        <div className="absolute inset-0 z-[5] opacity-10 pointer-events-none">
           <img 
             src="/images/banner.jpg" 
-            alt="Orisun FM Banner Background" 
+            alt="Orisun Igbomina FM Banner Background" 
             className="w-full h-full object-cover mix-blend-overlay"
           />
         </div>
 
         {/* Content Overlay */}
-        <section className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 text-center pointer-events-none">
+        <section className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 pb-24 text-center pointer-events-none">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -54,33 +75,41 @@ export default function HomeContent() {
               transition={{ delay: 0.5, duration: 0.8 }}
               className="inline-block px-4 py-1 border border-orisun-gold rounded-full bg-orisun-gold/10"
             >
-              <span className="text-orisun-gold font-unbounded text-sm tracking-widest uppercase animate-pulse">
-                ● Live Now
+              <span className="text-orisun-gold font-unbounded text-xs tracking-widest uppercase animate-pulse flex items-center gap-1.5 justify-center">
+                <span className="w-1.5 h-1.5 bg-orisun-crimson rounded-full" />
+                Live Broadcast
               </span>
             </motion.div>
             
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-fraunces italic text-orisun-ivory leading-tight tracking-tighter">
-              Orisun<br />
-              Igbomina<br />
-              102.1 FM
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-fraunces text-orisun-ivory leading-[1.08] tracking-tight">
+              Orisun <span className="italic text-orisun-gold font-medium">Igbomina</span><br />
+              <span className="font-unbounded text-2xl md:text-4xl lg:text-5xl tracking-widest text-orisun-ivory/90 uppercase">102.1 FM</span>
             </h1>
 
             <motion.div 
-              initial={{ opacity: 0, rotate: -5 }}
-              animate={{ opacity: 1, rotate: -1 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.8, duration: 0.6 }}
-              className="bg-orisun-yellow text-orisun-deep px-6 py-2 rounded-sm inline-block mt-4"
+              className="inline-block mt-4"
             >
-               <span className="font-fraunces text-2xl font-bold">Originality At Its Peak....</span>
+               <span className="font-fraunces text-md md:text-xl font-medium tracking-wider text-orisun-gold border-y border-orisun-gold/30 py-2 px-8 uppercase">
+                 Originality At Its Peak
+               </span>
             </motion.div>
             
-            <div className="flex flex-wrap justify-center gap-6 mt-12">
-              <button className="px-8 py-4 bg-orisun-gold text-orisun-deep font-unbounded font-bold rounded-sm transition-transform hover:scale-105 active:scale-95">
-                LISTEN LIVE
+            <div className="flex flex-wrap justify-center gap-6 mt-10">
+              <button 
+                onClick={handleListenLive}
+                className="px-8 py-4 bg-orisun-gold text-orisun-deep font-unbounded text-xs font-bold rounded-sm transition-transform hover:scale-105 active:scale-95 cursor-pointer shadow-lg shadow-orisun-gold/15"
+              >
+                {isPlaying ? "PAUSE STREAM" : "LISTEN LIVE"}
               </button>
-              <button className="px-8 py-4 border-2 border-orisun-ivory text-orisun-ivory font-unbounded font-bold rounded-sm transition-all hover:bg-orisun-ivory hover:text-orisun-deep">
+              <a 
+                href="#news-section"
+                className="px-8 py-4 border border-orisun-ivory/60 text-orisun-ivory font-unbounded text-xs font-bold rounded-sm transition-all hover:bg-orisun-ivory hover:text-orisun-deep cursor-pointer"
+              >
                 EXPLORE STORIES
-              </button>
+              </a>
             </div>
           </motion.div>
 
@@ -96,12 +125,12 @@ export default function HomeContent() {
         <div className="relative z-10 bg-orisun-deep/70 backdrop-blur-md">
           <OnAirSchedule />
 
-          <section className="px-8 py-32 border-t border-orisun-gold/10">
+          <section id="news-section" className="px-8 py-32 border-t border-orisun-gold/10">
             <div className="max-w-7xl mx-auto">
                <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-16">
                  <div className="space-y-4">
                    <p className="text-orisun-gold font-unbounded text-xs tracking-[0.3em] uppercase">Latest Updates</p>
-                   <h2 className="text-5xl md:text-7xl font-fraunces text-orisun-ivory italic">From Igbominaland</h2>
+                   <h2 className="text-4xl md:text-6xl font-fraunces text-orisun-ivory leading-tight">From <span className="italic text-orisun-gold font-medium">Igbominaland</span></h2>
                  </div>
                  <button className="px-6 py-3 border border-orisun-gold/40 text-orisun-gold font-unbounded text-[10px] tracking-widest hover:bg-orisun-gold hover:text-orisun-deep transition-all">
                    VIEW ALL NEWS
@@ -155,7 +184,7 @@ export default function HomeContent() {
                 transition={{ duration: 0.7, delay: 0.2 }}
                 className="text-orisun-ivory/60 font-dm-sans text-lg max-w-2xl mx-auto mb-12 leading-relaxed"
               >
-                Witnessed something your community must know? Submit your eye-witness account, photo, or video directly to Orisun FM&apos;s editorial team. Every submission is reviewed within minutes.
+                Witnessed something your community must know? Submit your eye-witness account, photo, or video directly to Orisun Igbomina FM 102.1&apos;s editorial team. Every submission is reviewed within minutes.
               </motion.p>
 
               {/* 3-step flow */}
@@ -209,7 +238,7 @@ export default function HomeContent() {
               {/* Security note */}
               <div className="mt-8 flex items-center justify-center gap-2 text-orisun-ivory/25 text-xs font-dm-sans">
                 <ShieldCheck size={13} />
-                All submissions are encrypted and handled securely by Orisun FM.
+                All submissions are encrypted and handled securely by Orisun Igbomina FM 102.1.
               </div>
             </div>
           </section>

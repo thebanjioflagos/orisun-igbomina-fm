@@ -6,7 +6,7 @@ import { Eye, Radio, ShieldCheck, Zap } from "lucide-react";
 export const metadata: Metadata = {
   title: "Report Breaking News — Orisun Igbomina FM",
   description:
-    "Are you on the scene? Submit your eye-witness video, photo, or account of breaking events to Orisun FM. Your community needs to know.",
+    "Are you on the scene? Submit your eye-witness video, photo, or account of breaking events to Orisun Igbomina FM 102.1. Your community needs to know.",
 };
 
 export default function ReportNewsPage() {
@@ -37,7 +37,7 @@ export default function ReportNewsPage() {
                 You Are the Reporter
               </h1>
               <p className="text-orisun-ivory/60 font-dm-sans text-lg max-w-2xl leading-relaxed">
-                Witnessed something the community needs to know? Submit your eye-witness account, photo, or video directly to Orisun FM&apos;s editorial team. We review every submission.
+                Witnessed something the community needs to know? Submit your eye-witness account, photo, or video directly to Orisun Igbomina FM 102.1&apos;s editorial team. We review every submission.
               </p>
             </div>
           </div>
@@ -85,7 +85,7 @@ export default function ReportNewsPage() {
         {/* Security badge */}
         <div className="mt-8 flex items-center justify-center gap-2 text-orisun-ivory/30 text-xs font-dm-sans">
           <ShieldCheck size={14} />
-          Your submission is encrypted and handled securely by Orisun FM.
+          Your submission is encrypted and handled securely by Orisun Igbomina FM 102.1.
         </div>
       </div>
     </div>

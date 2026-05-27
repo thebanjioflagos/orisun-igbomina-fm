@@ -14,7 +14,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     }
 
     const body = await req.json();
-    const { title, content, status } = body;
+    const { title, content, status, image } = body;
 
     // Fetch existing post to check ownership or roles
     const existing = await prisma.post.findUnique({
@@ -61,6 +61,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       data: {
         ...(title && { title, slug }),
         ...(content && { content }),
+        ...(image && { image }),
         ...(finalStatus && { status: finalStatus }),
       },
     });

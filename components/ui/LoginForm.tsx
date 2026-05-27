@@ -7,12 +7,16 @@
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { useJingleStore } from "@/lib/jingle-engine";
 
 export default function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const playJingle = useJingleStore((s) => s.actions.play);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,8 +43,9 @@ export default function LoginForm() {
       setError("Invalid email or password. Please try again.");
       setLoading(false);
     } else {
-      // SPA navigation — no full page reload
-      router.replace("/admin");
+      // Play admin welcome jingle then navigate
+      playJingle("adminWelcome");
+      setTimeout(() => router.replace("/admin"), 600);
     }
   };
 
@@ -63,7 +68,7 @@ export default function LoginForm() {
           required
           autoComplete="email"
           className="form-input"
-          placeholder="admin@example.com"
+          placeholder="admin@orisunigbominafm.com"
           aria-describedby={error ? "form-error" : undefined}
         />
       </div>
@@ -72,16 +77,26 @@ export default function LoginForm() {
         <label htmlFor="password" className="form-label">
           Password
         </label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          required
-          autoComplete="current-password"
-          className="form-input"
-          placeholder="••••••••"
-          aria-describedby={error ? "form-error" : undefined}
-        />
+        <div className="relative">
+          <input
+            id="password"
+            name="password"
+            type={showPassword ? "text" : "password"}
+            required
+            autoComplete="current-password"
+            className="form-input pr-10 w-full"
+            placeholder="••••••••"
+            aria-describedby={error ? "form-error" : undefined}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-orisun-ivory/50 hover:text-orisun-gold transition-colors"
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
       </div>
 
       {error && (

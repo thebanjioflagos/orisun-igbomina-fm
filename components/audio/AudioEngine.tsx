@@ -1,11 +1,15 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Howl } from 'howler';
 import { useAudioStore } from '@/lib/audio-store';
 
-// Official Stream URL (Falls back to placeholder if env not set)
-const STREAM_URL = process.env.NEXT_PUBLIC_STREAM_URL || "https://icecast.radiofrance.fr/fip-midfi.mp3";
+// Ordered list of stream URLs to try (Falls back to local file if network fails)
+const STREAM_URLS = [
+  process.env.NEXT_PUBLIC_STREAM_URL,
+  "https://ice1.somafm.com/groovesalad-128-mp3",
+  "/audio/jingles/station-id.mp3"
+].filter(Boolean) as string[];
 
 export default function AudioEngine() {
   const isPlaying = useAudioStore((state) => state.isPlaying);
@@ -14,18 +18,27 @@ export default function AudioEngine() {
   const { setIsPlaying } = useAudioStore((state) => state.actions);
   
   const howlRef = useRef<Howl | null>(null);
+  const [streamIndex, setStreamIndex] = useState(0);
 
   useEffect(() => {
     // Initialise Howl for live stream
     howlRef.current = new Howl({
-      src: [STREAM_URL],
+      src: [STREAM_URLS[streamIndex]],
       html5: true, // Required for large streams
       format: ['mp3'],
       autoplay: false,
+      loop: streamIndex === STREAM_URLS.length - 1, // Loop if it's the local fallback jingle
       volume: isMuted ? 0 : volume,
       onloaderror: (id, error) => {
-        console.error("Audio Load Error:", error);
-        setIsPlaying(false);
+        console.warn(`Audio Load Error (URL: ${STREAM_URLS[streamIndex]}):`, error);
+        
+        if (streamIndex < STREAM_URLS.length - 1) {
+          console.log("Attempting fallback stream...");
+          setStreamIndex((prev) => prev + 1);
+        } else {
+          console.error("All audio streams failed to load.");
+          setIsPlaying(false);
+        }
       },
       onplayerror: (id, error) => {
         console.error("Audio Play Error:", error);
@@ -38,7 +51,8 @@ export default function AudioEngine() {
         howlRef.current.unload();
       }
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [streamIndex]);
 
   // Sync play/pause
   useEffect(() => {
@@ -52,13 +66,13 @@ export default function AudioEngine() {
     } else {
       howlRef.current.pause();
     }
-  }, [isPlaying]);
+  }, [isPlaying, streamIndex]);
 
   // Sync volume/mute
   useEffect(() => {
     if (!howlRef.current) return;
     howlRef.current.volume(isMuted ? 0 : volume);
-  }, [volume, isMuted]);
+  }, [volume, isMuted, streamIndex]);
 
   return null; // This component doesn't render anything
 }

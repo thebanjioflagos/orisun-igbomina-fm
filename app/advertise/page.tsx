@@ -66,7 +66,7 @@ function RateCardModal({ onClose }: { onClose: () => void }) {
             <MessageSquare size={16} /> EMAIL US FOR RATE CARD
           </a>
           <a
-            href="https://wa.me/2348001021021?text=Hello%20Orisun%20FM!%20I%27d%20like%20to%20request%20your%20rate%20card."
+            href="https://wa.me/2348001021021?text=Hello%20Orisun%20Igbomina%20FM%20102.1!%20I%27d%20like%20to%20request%20your%20rate%20card."
             target="_blank"
             rel="noopener noreferrer"
             className="w-full py-4 bg-orisun-gold/10 border border-orisun-gold/30 text-orisun-gold font-unbounded font-bold text-xs tracking-widest flex items-center justify-center gap-2 hover:bg-orisun-gold/20 transition-colors"
@@ -90,7 +90,7 @@ export default function AdvertisePage() {
       <section className="px-6 py-24 text-center">
         <div className="max-w-4xl mx-auto space-y-8">
           <p className="text-orisun-gold font-unbounded text-xs tracking-[0.3em] uppercase">
-            Advertise on Orisun FM
+            Advertise on Orisun Igbomina FM 102.1
           </p>
           <h1 className="text-6xl md:text-8xl font-fraunces text-orisun-ivory italic">Grow Your Voice</h1>
           <p className="text-xl font-dm-sans text-orisun-ivory/60 leading-relaxed">
@@ -166,7 +166,7 @@ export default function AdvertisePage() {
       <section className="py-12 px-6 bg-orisun-gold/5 border-y border-orisun-gold/10">
         <div className="max-w-3xl mx-auto text-center space-y-4">
           <p className="text-2xl font-fraunces text-orisun-ivory italic leading-relaxed">
-            &ldquo;Advertising on Orisun FM put my business in front of every household in Ila-Orangun and beyond.
+            &ldquo;Advertising on Orisun Igbomina FM 102.1 put my business in front of every household in Ila-Orangun and beyond.
             Within one week of our campaign, our sales doubled.&rdquo;
           </p>
           <p className="text-orisun-gold font-unbounded text-[10px] tracking-widest uppercase">

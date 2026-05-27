@@ -95,11 +95,13 @@ function FloatingArtifacts() {
  */
 function BrandedStudio() {
   const meshRef = useRef<THREE.Mesh>(null);
+  const timeRef = useRef(0);
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (!meshRef.current) return;
+    timeRef.current += delta;
     // Gentle hover float
-    meshRef.current.position.y = 2 + Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
+    meshRef.current.position.y = 2 + Math.sin(timeRef.current * 0.5) * 0.1;
   });
 
   return (

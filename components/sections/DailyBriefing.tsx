@@ -84,7 +84,7 @@ export default function DailyBriefing() {
                 <div className="flex items-center gap-2 pt-2">
                   <Radio size={14} className="text-orisun-gold" />
                   <span className="text-[10px] font-unbounded text-orisun-gold tracking-widest uppercase">
-                    Orisun FM 102.1 — On Air
+                    Orisun Igbomina FM 102.1 — On Air
                   </span>
                 </div>
               </div>

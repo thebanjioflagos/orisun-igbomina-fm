@@ -31,7 +31,8 @@ export async function getAuthSession(): Promise<AuthenticatedSession> {
  */
 export async function requireRole(...roles: Role[]): Promise<AuthenticatedSession> {
   const session = await getAuthSession();
-  if (!roles.includes(session.user.role)) {
+  const normalizedRole = session.user.role?.toLowerCase() as Role;
+  if (!roles.includes(normalizedRole)) {
     redirect("/admin?error=forbidden");
   }
   return session;

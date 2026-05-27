@@ -16,13 +16,15 @@ const ContentSecurityPolicy = `
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com;
   img-src 'self' data: blob: https: https://i.ytimg.com;
-  media-src 'self' blob: https:;
+  media-src 'self' blob: https: data:;
   connect-src 'self'
     https://api.anthropic.com
     https://api.paystack.co
     https://checkout.paystack.com
     https://vitals.vercel-insights.com
-    https://www.googletagmanager.com;
+    https://www.googletagmanager.com
+    https://raw.githack.com
+    https://cdn.jsdelivr.net;
   frame-src
     https://checkout.paystack.com
     https://www.youtube.com

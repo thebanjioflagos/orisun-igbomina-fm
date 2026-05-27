@@ -37,7 +37,7 @@ export default function AudioPlayer() {
             width="100%" 
             height="100%" 
             src="https://www.youtube.com/embed/live_stream?channel=UCYOURCHANNELID" 
-            title="Orisun FM Live Studio" 
+            title="Orisun Igbomina FM Live Studio" 
             frameBorder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
             allowFullScreen
@@ -63,7 +63,7 @@ export default function AudioPlayer() {
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 bg-orisun-crimson rounded-full animate-pulse flex-shrink-0" />
             <p className="text-[10px] font-unbounded text-orisun-gold uppercase tracking-widest truncate">
-              {isPlaying ? "Now Playing" : "Orisun FM 102.1"}
+              {isPlaying ? "Now Playing" : "Orisun Igbomina FM 102.1"}
             </p>
           </div>
           <p className="text-sm font-fraunces text-orisun-ivory truncate">

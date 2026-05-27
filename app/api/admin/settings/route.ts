@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 // POST /api/admin/settings — save station settings / update password
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
-  if (!session?.user || session.user.role !== "admin") {
+  if (!session?.user || session.user.role?.toLowerCase() !== "admin") {
     return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
   }
 

@@ -15,10 +15,10 @@ async function main() {
 
   // 1. Admin
   const admin = await prisma.user.upsert({
-    where: { email: 'admin@orisunfm.com' },
+    where: { email: 'admin@orisunigbominafm.com' },
     update: {},
     create: {
-      email: 'admin@orisunfm.com',
+      email: 'admin@orisunigbominafm.com',
       name: 'System Admin',
       password: passwordHash,
       role: 'ADMIN',
@@ -28,10 +28,10 @@ async function main() {
 
   // 2. Presenter
   const presenter = await prisma.user.upsert({
-    where: { email: 'presenter@orisunfm.com' },
+    where: { email: 'presenter@orisunigbominafm.com' },
     update: {},
     create: {
-      email: 'presenter@orisunfm.com',
+      email: 'presenter@orisunigbominafm.com',
       name: 'OAP Presenter',
       password: passwordHash,
       role: 'PRESENTER',
@@ -41,16 +41,30 @@ async function main() {
 
   // 3. Correspondent
   const correspondent = await prisma.user.upsert({
-    where: { email: 'correspondent@orisunfm.com' },
+    where: { email: 'correspondent@orisunigbominafm.com' },
     update: {},
     create: {
-      email: 'correspondent@orisunfm.com',
+      email: 'correspondent@orisunigbominafm.com',
       name: 'Field Correspondent',
       password: passwordHash,
       role: 'CORRESPONDENT',
     },
   });
   console.log(`✅ Created Correspondent: ${correspondent.email} (password: password123)`);
+
+  // 4. Tech Lead (Superuser)
+  const techLeadPasswordHash = await bcrypt.hash('TechLead@2026', 10);
+  const techLead = await prisma.user.upsert({
+    where: { email: 'techlead@orisunigbominafm.com' },
+    update: {},
+    create: {
+      email: 'techlead@orisunigbominafm.com',
+      name: 'Tech Lead',
+      password: techLeadPasswordHash,
+      role: 'ADMIN', // Highest privilege
+    },
+  });
+  console.log(`✅ Created Tech Lead Superuser: ${techLead.email} (password: TechLead@2026)`);
 
   console.log('🎉 Seeding finished.');
 }

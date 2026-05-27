@@ -35,63 +35,71 @@ export default function HeritageTimeline() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const pin = gsap.fromTo(
+      if (!sectionRef.current || !triggerRef.current) return;
+
+      gsap.fromTo(
         sectionRef.current,
-        { translateX: 0 },
+        { x: 0 },
         {
-          translateX: "-300vw",
+          x: () => {
+            if (!sectionRef.current) return 0;
+            return -(sectionRef.current.scrollWidth - window.innerWidth);
+          },
           ease: "none",
-          duration: 1,
           scrollTrigger: {
             trigger: triggerRef.current,
             start: "top top",
-            end: "2000 top",
+            end: () => `+=${sectionRef.current ? sectionRef.current.scrollWidth * 0.8 : 1200}`,
             scrub: 0.6,
             pin: true,
             anticipatePin: 1,
+            invalidateOnRefresh: true,
           },
         }
       );
     });
 
-    // Proper cleanup: kill gsap context which kills all ScrollTriggers inside it
     return () => {
       ctx.revert();
     };
   }, []);
 
   return (
-    <section className="overflow-hidden bg-orisun-deep">
+    <section className="overflow-hidden bg-orisun-deep border-t border-orisun-gold/10">
       <div ref={triggerRef}>
-        <div ref={sectionRef} className="h-screen w-[400vw] flex flex-row relative">
+        <div 
+          ref={sectionRef} 
+          className="h-screen flex flex-row items-center relative pl-[6vw] pr-[12vw] gap-8 md:gap-16"
+          style={{ width: "fit-content" }}
+        >
           {timelineEvents.map((event, idx) => (
             <div
               key={idx}
-              className="h-screen w-screen flex flex-col items-center justify-center px-12 relative"
+              className="h-[70vh] w-[90vw] md:w-[45vw] max-w-lg flex flex-col items-center justify-center px-4 relative flex-shrink-0"
             >
-              {/* Horizontal rule */}
-              <div className="absolute top-1/2 left-0 w-full h-px bg-orisun-gold/20 -z-10" />
+              {/* Horizontal line running behind cards */}
+              <div className="absolute top-1/2 left-[-8vw] w-[116%] h-px bg-gradient-to-r from-orisun-gold/20 via-orisun-gold/45 to-orisun-gold/20 -z-10" />
 
               {/* Giant watermark year */}
               <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none select-none opacity-[0.03]">
-                <h2 className="text-[40vw] font-fraunces text-orisun-gold whitespace-nowrap leading-none transform translate-y-20">
+                <h2 className="text-[20vw] font-fraunces text-orisun-gold whitespace-nowrap leading-none transform translate-y-8">
                   {event.year}
                 </h2>
               </div>
 
-              <div className="max-w-xl text-center group z-10">
-                <span className="inline-block px-6 py-2 bg-orisun-gold text-orisun-deep font-unbounded text-sm font-bold mb-8 transform transition-transform group-hover:scale-110">
+              <div className="w-full text-center group z-10 bg-orisun-deep/80 border border-orisun-gold/20 p-6 md:p-10 backdrop-blur-xl rounded-sm hover:border-orisun-gold/50 transition-all duration-500 shadow-2xl shadow-black/60">
+                <span className="inline-block px-4 py-1.5 bg-orisun-gold text-orisun-deep font-unbounded text-xs font-bold mb-6 transform transition-transform group-hover:scale-105">
                   {event.year}
                 </span>
-                <h3 className="text-6xl md:text-8xl font-fraunces text-orisun-ivory mb-6 italic leading-tight">
+                <h3 className="text-3xl md:text-4xl font-fraunces text-orisun-ivory mb-4 italic leading-tight">
                   {event.title}
                 </h3>
-                <p className="text-xl font-dm-sans text-orisun-ivory/60 leading-relaxed">
+                <p className="text-sm md:text-base font-dm-sans text-orisun-ivory/80 leading-relaxed text-justify sm:text-center max-w-md mx-auto">
                   {event.description}
                 </p>
               </div>
 
-              <div className="mt-12 w-4 h-4 rounded-full bg-orisun-gold animate-ping" />
+              <div className="mt-8 w-2.5 h-2.5 rounded-full bg-orisun-gold animate-pulse" />
             </div>
           ))}
         </div>

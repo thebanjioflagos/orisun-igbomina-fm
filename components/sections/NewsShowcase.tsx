@@ -18,7 +18,7 @@ const newsItems = [
     id:       2,
     category: "News",
     title:    "New 102.1 FM Transmitter Expands Reach to Neighbouring States",
-    excerpt:  "The installation of a high-power transmitter will extend Orisun FM's signal into Kwara and Ekiti State communities.",
+    excerpt:  "The installation of a high-power transmitter will extend ORISUN IGBOMINA FM 102.1's signal into Kwara and Ekiti State communities.",
     date:     "Oct 10, 2026",
     slug:     "transmitter-expansion",
     accent:   "bg-orisun-crimson",
